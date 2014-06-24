@@ -9,16 +9,32 @@ import javax.validation.ValidatorFactory;
 import javax.validation.executable.ExecutableValidator;
 import javax.validation.executable.ValidateOnExecution;
 
+/**
+ * Adds {@code Validator} bean to guice context (to make it available for manual validations).
+ * Method validations will activate by annotation {@code ValidateOnExecution} on class or method.
+ *
+ * @author Vyacheslav Rusakov
+ * @since 24.06.2014
+ */
 public class ValidationModule extends AbstractModule {
 
-    private ValidatorFactory bootstrapFactory;
+    private ValidatorFactory factory;
 
+    /**
+     * Creates module using default validator factory.
+     */
     public ValidationModule() {
         this(Validation.buildDefaultValidatorFactory());
     }
 
-    public ValidationModule(ValidatorFactory bootstrapFactory) {
-        this.bootstrapFactory = bootstrapFactory;
+    /**
+     * Create module using custom validator factory.
+     * Useful if other (non guice) parts use validation too and don't want to know about guice.
+     *
+     * @param factory base factory
+     */
+    public ValidationModule(ValidatorFactory factory) {
+        this.factory = factory;
     }
 
     @Override
@@ -26,8 +42,8 @@ public class ValidationModule extends AbstractModule {
         GuiceConstraintValidatorFactory constraintValidatorFactory = new GuiceConstraintValidatorFactory();
         requestInjection(constraintValidatorFactory);
 
-        Validator validator = bootstrapFactory.usingContext()
-                // allow to use guice bindings inside validators
+        /* Overriding just constraints factory to allow them use guice injections */
+        Validator validator = factory.usingContext()
                 .constraintValidatorFactory(constraintValidatorFactory)
                 .getValidator();
 
@@ -37,7 +53,9 @@ public class ValidationModule extends AbstractModule {
         GuiceMethodValidator interceptor = new GuiceMethodValidator();
         requestInjection(interceptor);
 
-        //think about Constraint.class, Valid.class, bindings (using ValidateOnExecution everywhere is actually not correct)
+        /* Using explicit annotation matching because annotations may be used just for compile time checks
+        (see hibernate validator apt lib). Moreover it makes "automatic" validation more explicit.
+        Such annotation usage is contradict with its javadoc, but annotation name is ideal for use case, so why introduce new one).*/
         bindInterceptor(Matchers.any(), Matchers.annotatedWith(ValidateOnExecution.class), interceptor);
         bindInterceptor(Matchers.annotatedWith(ValidateOnExecution.class), Matchers.any(), interceptor);
     }

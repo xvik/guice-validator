@@ -16,8 +16,13 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * based on org.hibernate.validator.internal.cdi.interceptor.ValidationInterceptor
- * from hibernate-validator-cdi-5.1.1.Final module
+ * Method interceptor (actual method validation implementation).
+ * <p/>
+ * Based on {@code org.hibernate.validator.internal.cdi.interceptor.ValidationInterceptor}
+ * from hibernate-validator-cdi-5.1.1.Final module.
+ *
+ * @author hibernate-validator team
+ * @since 24.06.2014
  */
 @Singleton
 public class GuiceMethodValidator implements MethodInterceptor {

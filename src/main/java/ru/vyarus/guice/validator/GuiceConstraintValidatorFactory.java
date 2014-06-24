@@ -6,20 +6,30 @@ import javax.inject.Inject;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorFactory;
 
-public class GuiceConstraintValidatorFactory implements ConstraintValidatorFactory{
+/**
+ * Creates validator instances with guice injections available.
+ * Any type of injection is allowed (constructor, setter, field).
+ * Pay attention that validator usually stateful, so not declare the as singletons
+ * (better not declare at all and rely on guice automatic dependecy resolution).
+ *
+ * @author Vyacheslav Rusakov
+ * @since 24.06.2014
+ */
+public class GuiceConstraintValidatorFactory implements ConstraintValidatorFactory {
 
     @Inject
     private Injector injector;
 
     @Override
     public <T extends ConstraintValidator<?, ?>> T getInstance(Class<T> key) {
-        // by default all beans are in prototype scope, so new instance will be obtained each time.
-        // implementer may do singletons and maintain internal state (to re-use validators and simplify life for GC)
+        /* By default, all beans are in prototype scope, so new instance will be obtained each time.
+         Validator implementer may declare it as singleton and manually maintain internal state
+         (to re-use validators and simplify life for GC) */
         return injector.getInstance(key);
     }
 
     @Override
     public void releaseInstance(ConstraintValidator<?, ?> instance) {
-        // garbage collector will do it
+        /* Garbage collector will do it */
     }
 }

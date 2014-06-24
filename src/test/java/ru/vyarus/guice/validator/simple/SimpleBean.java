@@ -1,24 +1,24 @@
-package ru.vyarus.guice.validator.module;
+package ru.vyarus.guice.validator.simple;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Vyacheslav Rusakov (vyarus@gmail.com)
- * @since 24.06.2014.
+ * @author Vyacheslav Rusakov
+ * @since 24.06.2014
  */
-public class TestBean {
+public class SimpleBean {
 
     @NotBlank
     private String name;
     @NotNull
     private Integer value;
 
-    public TestBean() {
+    public SimpleBean() {
     }
 
-    public TestBean(String name, Integer value) {
+    public SimpleBean(String name, Integer value) {
         this.name = name;
         this.value = value;
     }
