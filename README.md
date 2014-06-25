@@ -6,7 +6,11 @@
 ### About
 
 Allows to validate service method parameters and return value using javax.validation annotations.
-Assuming to use with [hibernate-validator](http://hibernate.org/validator/), but can be used with other implementations.
+Suggest to use it with [hibernate-validator](http://hibernate.org/validator/) (but can be used with other implementations).
+
+Features:
+* Trigger validation on service method call
+* Inject dependencies to custom validators
 
 ### Setup
 
