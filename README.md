@@ -1,6 +1,7 @@
 Guice method validator
 ======================
 [![Build Status](https://travis-ci.org/xvik/guice-validator.svg?branch=master)](https://travis-ci.org/xvik/guice-validator)
+[ ![Download](https://api.bintray.com/packages/vyarus/xvik/guice-validator/images/download.png) ](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
 
 Integrates guice with javax.validation 1.1 method validators (aka allows to use validation annotations for method parameters and return value validation)
 
