@@ -1,35 +1,144 @@
-Guice method validator
-======================
+#Guice validator
+
 [![Build Status](https://travis-ci.org/xvik/guice-validator.svg?branch=master)](https://travis-ci.org/xvik/guice-validator)
 [ ![Download](https://api.bintray.com/packages/vyarus/xvik/guice-validator/images/download.png) ](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
 
-Integrates guice with javax.validation 1.1 method validators (aka allows to use validation annotations for method parameters and return value validation)
+### About
 
-Usage tested with hibernate validator (http://hibernate.org/validator/)
+Allows to validate service method parameters and return value using javax.validation annotations.
+Assuming to use with [hibernate-validator](http://hibernate.org/validator/), but can be used with other implementations.
 
-Required dependencies:
-'org.hibernate:hibernate-validator:5.1.1.Final'
-'org.glassfish.web:javax.el:2.2.6'
+### Setup
 
-Include ValidationModule in your module configuration:
+Maven:
+
+Add `http://jcenter.bintray.com/` repository
+
+```xml
+<dependency>
+  <groupId>ru.vyarus</groupId>
+  <artifactId>guice-validator</artifactId>
+  <version>1.0</version>
+</dependency>
+<dependency>
+  <groupId>org.hibernate</groupId>
+  <artifactId>hibernate-validator</artifactId>
+  <version>5.1.1.Final</version>
+</dependency>
+<dependency>
+  <groupId>org.glassfish.web</groupId>
+  <artifactId>web:javax.el</artifactId>
+  <version>2.2.6</version>
+</dependency>
+```
+
+Gradle:
+
+Add `jcenter()` repository
+
+```groovy
+compile 'ru.vyarus:guice-validator:1.0'
+compile 'org.hibernate:hibernate-validator:5.1.1.Final'
+compile 'org.glassfish.web:javax.el:2.2.6'
+```
+
+### Install the Guice module
+
+```java
 install(new ValidationModule());
+```
 
-Optionally, ValidatorFactory instance may be provided to module constructor to re-use already configured instance or
-simply fine-tune factory for your needs.
+To create and use with default validation factory.
 
-After that use annotations on methods to check method parameters or return values, like
-public void action(@NotNull @Valid SimpleBean bean)
+```java
+install(new ValidationModule(yourValidationFactory));
+```
 
-To activate runtime checks use @ValidateOnExecution on class to enable for all methods or on exact methods.
-Using this annotation to activate checks a bit contradict with javadoc, but allows using annotation not just for 
-runtime checks but also for compile time checks (using hibernate validator annotation processor)
+To use custom (pre-configured) validation factory.
 
-Various usage examples could be find in tests.
-Otherwise, consult with hibernate-validator documentation: http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/
+### Usage
 
-Most useful:
-base annotations and general usage: http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-bean-constraints.html
-writing custom annotations: http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/validator-customconstraints.html
-factory configuration: http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-bootstrapping.html
-using annotation processor (compile time checks): http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/validator-annotation-processor.html
+To enable runtime method validation, annotate entire class or method with `@ValidateOnExecution`.
+Now all parameter or return value annotations will trigger validations on method execution. 
 
+### Examples
+
+Assuming `@ValidateOnExecution` applied to class.
+
+Annotating method parameter with `@NotNull`
+
+```java
+public SimpleBean beanRequired(@NotNull SimpleBean bean) 
+```
+
+Now, if we call it like this
+
+```java
+myService.beanRequired(null);
+```
+
+`ConstraintViolationException` will be casted.
+
+The same could be done for return value:
+
+```java
+@NotNull
+public SimpleBean beanRequired(SimpleBean bean) 
+```
+
+Now exception will be thrown if method returns null.
+
+
+##### Object state
+
+If parameter or returned object contains validation annotations, and it must be checked before/after method execution,
+add `@Valid` annotation.
+
+```java
+public SimpleBean beanRequired(@NotNull @Valid SimpleBean bean) 
+```
+
+##### Custom validator
+
+Guice injections could be used when writing custom validators
+
+```java
+public class ComplexBeanValidator implements ConstraintValidator<ComplexBeanValid, ComplexBean> {
+
+    @Inject
+    private CustomService customService;
+
+    @Override
+    public void initialize(ComplexBeanValid constraintAnnotation) {
+        /* if annotation contains addition parameter it must be parsed here.. skipping for simplicity.
+          NOTE: in such simple case we can make validator singleton, because of no internal state */
+    }
+
+    @Override
+    public boolean isValid(ComplexBean value, ConstraintValidatorContext context) {
+        /* common convention is to treat null values as valid and explicitly check them with @NotNull */
+        return value == null || customService.getRequiredValue().equals(value.getUser());
+    }
+}
+``` 
+
+### More
+
+More examples could be found in tests.
+
+Also, read hibernate-validator docs:
+* [Base annotations](http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-bean-constraints.html)
+* [Writing custom annotations] (http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/validator-customconstraints.html)
+* [Validation factory configuration] (http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-bootstrapping.html)
+
+
+### Compile time validation
+
+Hibernate-validator provides annotation processor to perform additional checks in compile time: [see docs](http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/validator-annotation-processor.html)
+
+Because of this feature `@ValidateOnExecution` annotation chosen for runtime validation: to allow using other annotations 
+just for compile time checks.
+
+### Licence
+
+MIT
