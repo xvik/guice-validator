@@ -80,8 +80,8 @@ publishing {
 }
 
 bintray {
-    user = bintrayUser //this usually comes form gradle.properties file in ~/.gradle
-    key = bintrayKey //this usually comes form gradle.properties file in ~/.gradle
+    user = has('bintrayUser') ? bintrayUser : 'USER' //this usually comes form gradle.properties file in ~/.gradle
+    key = has('bintrayKey') ? bintrayKey : 'KEY' //this usually comes form gradle.properties file in ~/.gradle
     publications = ['mavenJava'] // see publications closure
     dryRun = false // whether to run this as dry-run, without deploying
     publish = true //If version should be auto published after an upload
