@@ -17,10 +17,10 @@ import java.util.Set;
 
 /**
  * Method interceptor (actual method validation implementation).
- * <p/>
+ * <p>
  * Based on {@code org.hibernate.validator.internal.cdi.interceptor.ValidationInterceptor}
  * from hibernate-validator-cdi-5.1.1.Final module.
- *
+ * </p>
  * @author hibernate-validator team
  * @since 24.06.2014
  */

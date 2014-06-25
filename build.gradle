@@ -1,11 +1,27 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.6
-version = '1.0-SNAPSHOT'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.4'
+    }
+}
 
 repositories {
+    jcenter()
     mavenCentral()
+    mavenLocal()
 }
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+version = '1.0'
+group = 'ru.vyarus'
 
 dependencies {
     compile 'com.google.inject:guice:3.0'
@@ -14,4 +30,70 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile 'org.hibernate:hibernate-validator:5.1.1.Final'
     testCompile 'org.glassfish.web:javax.el:2.2.6'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal') << {
+    logger.warn "INSTALLED $project.group:$project.name:$project.version"
+}
+
+task release(dependsOn: 'bintrayUpload') << {
+    logger.warn "RELEASED $project.group:$project.name:$project.version"
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            if (plugins.hasPlugin('war')) {
+                from components.web
+            } else {
+                from components.java
+            }
+
+            artifact sourcesJar {
+                classifier "sources"
+            }
+
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+        }
+    }
+}
+
+bintray {
+    user = bintrayUser //this usually comes form gradle.properties file in ~/.gradle
+    key = bintrayKey //this usually comes form gradle.properties file in ~/.gradle
+    publications = ['mavenJava'] // see publications closure
+    dryRun = false // whether to run this as dry-run, without deploying
+    publish = true //If version should be auto published after an upload
+    pkg { //package will be created if does not exist
+        repo = 'xvik'
+//            userOrg = 'myorg' // an optional organization name when the repo belongs to one of the user's orgs
+        name = 'guice-validator'
+        desc = 'Guice method validation through javax.validation implementation (hibernate-validator)'
+        websiteUrl = 'https://github.com/xvik/guice-validator'
+        issueTrackerUrl = 'https://github.com/xvik/guice-validator/issues'
+        vcsUrl = 'https://github.com/xvik/guice-validator.git'
+        licenses = ['MIT']
+        labels = ['guice', 'validation', 'hibernate-validator']
+    }
 }
