@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.4'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.4.1'
     }
 }
 
@@ -22,6 +22,7 @@ targetCompatibility = 1.6
 
 version = '1.0.1'
 group = 'ru.vyarus'
+description = 'Guice method validation through javax.validation implementation (hibernate-validator)'
 
 dependencies {
     compile 'com.google.inject:guice:3.0'
@@ -59,6 +60,28 @@ artifacts {
     archives javadocJar
 }
 
+// extend pom for maven central acceptance
+def pomConfig = {
+    scm {
+        url 'https://github.com/xvik/guice-validator.git'
+        connection 'scm:git:git://github.com/xvik/guice-validator.git'
+    }
+    licenses {
+        license {
+            name "The MIT License (MIT)"
+            url "https://raw.githubusercontent.com/xvik/guice-validator/master/LICENSE"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "xvik"
+            name "Vyacheslav Rusakov"
+            email "vyarus@gmail.com"
+        }
+    }
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -68,12 +91,22 @@ publishing {
                 from components.java
             }
 
-            artifact sourcesJar {
-                classifier "sources"
-            }
+            artifact sourcesJar
+            artifact javadocJar
 
-            artifact javadocJar {
-                classifier "javadoc"
+            pom.withXml {
+                // gradle sets runtime scope for all dependencies.. fixing
+                asNode().dependencies.'*'.findAll() {
+                    it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
+                        dep.name == it.artifactId.text()
+                    }
+                }.each() {
+                    it.scope*.value = 'compile'
+                }
+
+                def root = asNode()
+                root.appendNode('description', project.description)
+                root.children().last() + pomConfig
             }
         }
     }
