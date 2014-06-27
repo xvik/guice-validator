@@ -62,16 +62,16 @@ task release(dependsOn: 'bintrayUpload', description: 'publish version to bintra
 task bintraySignVersion(type: org._10ne.gradle.rest.RestTask, description: 'Sign version files (auto sign bintray feature') {
     httpMethod = 'post'
     uri = "https://api.bintray.com/gpg/vyarus/xvik/guice-validator/versions/$project.version"
-    username = bintrayUser
-    password = bintrayKey
+    username = project.hasProperty('bintrayUser') ? bintrayUser : 'USER'
+    password = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY'
 }
 
 // create gpg signs and publish them
 task bintrayPublishSigns(type: org._10ne.gradle.rest.RestTask, dependsOn: 'bintraySignVersion', description: 'Sign version files and publish sign files') {
     httpMethod = 'post'
     uri = "https://api.bintray.com/content/vyarus/xvik/guice-validator/$project.version/publish"
-    username = bintrayUser
-    password = bintrayKey
+    username = project.hasProperty('bintrayUser') ? bintrayUser : 'USER'
+    password = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY'
 }
 
 
