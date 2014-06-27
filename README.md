@@ -22,7 +22,7 @@ Add `http://jcenter.bintray.com/` repository
 <dependency>
   <groupId>ru.vyarus</groupId>
   <artifactId>guice-validator</artifactId>
-  <version>1.0</version>
+  <version>1.0.1</version>
 </dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
@@ -41,7 +41,7 @@ Gradle:
 Add `jcenter()` repository
 
 ```groovy
-compile 'ru.vyarus:guice-validator:1.0'
+compile 'ru.vyarus:guice-validator:1.0.1'
 compile 'org.hibernate:hibernate-validator:5.1.1.Final'
 compile 'org.glassfish.web:javax.el:2.2.6'
 ```

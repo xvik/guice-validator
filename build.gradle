@@ -1,9 +1,11 @@
 buildscript {
     repositories {
         jcenter()
+        maven { url 'http://dl.bintray.com/content/noamt/gradle-plugins' }
     }
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.4.1'
+        classpath 'org._10ne.gradle:rest-gradle-plugin:0.1.1'
     }
 }
 
@@ -34,7 +36,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.0-rc-2'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -47,13 +49,32 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal') << {
+task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal', description: 'install to local maven repo only') << {
     logger.warn "INSTALLED $project.group:$project.name:$project.version"
 }
 
-task release(dependsOn: 'bintrayUpload') << {
+task release(dependsOn: 'bintrayUpload', description: 'publish version to bintray') << {
     logger.warn "RELEASED $project.group:$project.name:$project.version"
 }
+
+// no way to do it from web ui and bintray plugin doesn't support it
+// NOTE: files wil remain unpublished so go to bintray and publish them, after that do maven central sync (on web ui)
+task bintraySignVersion(type: org._10ne.gradle.rest.RestTask, description: 'Sign version files (auto sign bintray feature') {
+    httpMethod = 'post'
+    uri = "https://api.bintray.com/gpg/vyarus/xvik/guice-validator/versions/$project.version"
+    username = bintrayUser
+    password = bintrayKey
+}
+
+// create gpg signs and publish them
+task bintrayPublishSigns(type: org._10ne.gradle.rest.RestTask, dependsOn: 'bintraySignVersion', description: 'Sign version files and publish sign files') {
+    httpMethod = 'post'
+    uri = "https://api.bintray.com/content/vyarus/xvik/guice-validator/$project.version/publish"
+    username = bintrayUser
+    password = bintrayKey
+}
+
+
 
 artifacts {
     archives sourcesJar
@@ -105,7 +126,9 @@ publishing {
                 }
 
                 def root = asNode()
+                root.appendNode('name', project.name)
                 root.appendNode('description', project.description)
+                root.appendNode('url', 'https://github.com/xvik/guice-validator')
                 root.children().last() + pomConfig
             }
         }
