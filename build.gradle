@@ -108,6 +108,8 @@ bintrayPublish.doFirst {
     }
 }
 
+bintrayPublish.mustRunAfter bintrayUpload
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0-rc-2'
