@@ -1,3 +1,5 @@
+import org._10ne.gradle.rest.RestTask
+
 buildscript {
     repositories {
         jcenter()
@@ -10,14 +12,13 @@ buildscript {
 }
 
 repositories {
+    mavenLocal()
     jcenter()
     mavenCentral()
-    mavenLocal()
 }
 
 apply plugin: 'java'
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'rest'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -25,6 +26,48 @@ targetCompatibility = 1.6
 version = '1.0.1'
 group = 'ru.vyarus'
 description = 'Guice method validation through javax.validation implementation (hibernate-validator)'
+
+// convention: project.name == github project name == bintray project page
+project.ext {
+    github = {
+        user = 'xvik'
+    }
+    bintray = {
+        user = project.hasProperty('bintrayUser') ? bintrayUser : 'USER' // configured in ~/.gradle/gradle.properties
+        key = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY' // configured in ~/.gradle/gradle.properties
+        repo = 'xvik'
+        dryRun = false // whether to run this as dry-run, without deploying
+        publish = true //If version should be auto published after an upload
+    }
+    license = 'MIT'
+    licenseDesc = 'The MIT License'
+    tags = ['guice', 'validation', 'hibernate-validator']
+    // extend pom for maven central acceptance
+    pomConfig = {
+        scm {
+            url github.scm
+            connection github.scmConnection
+        }
+        licenses {
+            license {
+                name licenseDesc
+                url github.licenseUrl
+                distribution "repo"
+            }
+        }
+        developers {
+            developer {
+                id "xvik"
+                name "Vyacheslav Rusakov"
+                email "vyarus@gmail.com"
+            }
+        }
+    }
+}
+
+apply from: 'gradle/github.gradle'
+apply from: 'gradle/maven.gradle'
+apply from: 'gradle/bintray.gradle'
 
 dependencies {
     compile 'com.google.inject:guice:3.0'
@@ -35,121 +78,48 @@ dependencies {
     testCompile 'org.glassfish.web:javax.el:2.2.6'
 }
 
+// no way to do it from web ui and bintray plugin doesn't support it
+// NOTE: files wil remain unpublished so go to bintray and publish them, after that do maven central sync (on web ui)
+task bintraySignVersion(type: RestTask, description: 'Sign version files (auto sign bintray feature') {
+    httpMethod = 'post'
+    uri = bintray.signApiUrl
+    username = bintray.user
+    password = bintray.key
+}
+bintraySignVersion.doFirst {
+    // cancel task in dry run mode
+    if (bintray.dryRun) {
+        logger.warn('Skipping version signing in dry run mode')
+        throw new StopExecutionException()
+    }
+}
+
+task bintrayPublish(type: RestTask, dependsOn: 'bintraySignVersion', description: 'Sign version files and publish sign files') {
+    httpMethod = 'post'
+    uri = bintray.publishApiUrl
+    username = bintray.user
+    password = bintray.key
+}
+bintrayPublish.doFirst {
+    // cancel task in dry run mode
+    if (bintray.dryRun) {
+        logger.warn('Skipping version publishing in dry run mode')
+        throw new StopExecutionException()
+    }
+}
+
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0-rc-2'
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
 }
 
 task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal', description: 'install to local maven repo only') << {
     logger.warn "INSTALLED $project.group:$project.name:$project.version"
 }
 
-task release(dependsOn: 'bintrayUpload', description: 'publish version to bintray') << {
+task release(dependsOn: [bintrayUpload, bintrayPublish], description: 'publish version to bintray and sign all jars') << {
     logger.warn "RELEASED $project.group:$project.name:$project.version"
 }
 
-// no way to do it from web ui and bintray plugin doesn't support it
-// NOTE: files wil remain unpublished so go to bintray and publish them, after that do maven central sync (on web ui)
-task bintraySignVersion(type: org._10ne.gradle.rest.RestTask, description: 'Sign version files (auto sign bintray feature') {
-    httpMethod = 'post'
-    uri = "https://api.bintray.com/gpg/vyarus/xvik/guice-validator/versions/$project.version"
-    username = project.hasProperty('bintrayUser') ? bintrayUser : 'USER'
-    password = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY'
-}
-
-// create gpg signs and publish them
-task bintrayPublishSigns(type: org._10ne.gradle.rest.RestTask, dependsOn: 'bintraySignVersion', description: 'Sign version files and publish sign files') {
-    httpMethod = 'post'
-    uri = "https://api.bintray.com/content/vyarus/xvik/guice-validator/$project.version/publish"
-    username = project.hasProperty('bintrayUser') ? bintrayUser : 'USER'
-    password = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY'
-}
 
 
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-// extend pom for maven central acceptance
-def pomConfig = {
-    scm {
-        url 'https://github.com/xvik/guice-validator.git'
-        connection 'scm:git:git://github.com/xvik/guice-validator.git'
-    }
-    licenses {
-        license {
-            name "The MIT License (MIT)"
-            url "https://raw.githubusercontent.com/xvik/guice-validator/master/LICENSE"
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id "xvik"
-            name "Vyacheslav Rusakov"
-            email "vyarus@gmail.com"
-        }
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            if (plugins.hasPlugin('war')) {
-                from components.web
-            } else {
-                from components.java
-            }
-
-            artifact sourcesJar
-            artifact javadocJar
-
-            pom.withXml {
-                // gradle sets runtime scope for all dependencies.. fixing
-                asNode().dependencies.'*'.findAll() {
-                    it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
-                        dep.name == it.artifactId.text()
-                    }
-                }.each() {
-                    it.scope*.value = 'compile'
-                }
-
-                def root = asNode()
-                root.appendNode('name', project.name)
-                root.appendNode('description', project.description)
-                root.appendNode('url', 'https://github.com/xvik/guice-validator')
-                root.children().last() + pomConfig
-            }
-        }
-    }
-}
-
-bintray {
-    user = project.hasProperty('bintrayUser') ? bintrayUser : 'USER' //this usually comes form gradle.properties file in ~/.gradle
-    key = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY' //this usually comes form gradle.properties file in ~/.gradle
-    publications = ['mavenJava'] // see publications closure
-    dryRun = false // whether to run this as dry-run, without deploying
-    publish = true //If version should be auto published after an upload
-    pkg { //package will be created if does not exist
-        repo = 'xvik'
-//            userOrg = 'myorg' // an optional organization name when the repo belongs to one of the user's orgs
-        name = 'guice-validator'
-        desc = 'Guice method validation through javax.validation implementation (hibernate-validator)'
-        websiteUrl = 'https://github.com/xvik/guice-validator'
-        issueTrackerUrl = 'https://github.com/xvik/guice-validator/issues'
-        vcsUrl = 'https://github.com/xvik/guice-validator.git'
-        licenses = ['MIT']
-        labels = ['guice', 'validation', 'hibernate-validator']
-    }
-}
