@@ -112,7 +112,7 @@ bintrayPublish.mustRunAfter bintrayUpload
 
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0-rc-2'
+    gradleVersion = '2.0'
 }
 
 task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal', description: 'install to local maven repo only') << {
