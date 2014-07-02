@@ -14,9 +14,10 @@ Features:
 
 ### Setup
 
-Maven:
+Releases are published to [bintray jcenter](https://bintray.com/bintray/jcenter) (package appear immediately after release) 
+and then to maven central (require few days after release to be published). 
 
-Add `http://jcenter.bintray.com/` repository
+Maven:
 
 ```xml
 <dependency>
@@ -37,8 +38,6 @@ Add `http://jcenter.bintray.com/` repository
 ```
 
 Gradle:
-
-Add `jcenter()` repository
 
 ```groovy
 compile 'ru.vyarus:guice-validator:1.0.1'
