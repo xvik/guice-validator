@@ -1,5 +1,5 @@
 #Guice validator
-
+[![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/xvik/guice-validator.svg?branch=master)](https://travis-ci.org/xvik/guice-validator)
 [ ![Download](https://api.bintray.com/packages/vyarus/xvik/guice-validator/images/download.png) ](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
 
@@ -141,7 +141,3 @@ Hibernate-validator provides annotation processor to perform additional checks i
 
 Because of this feature `@ValidateOnExecution` annotation chosen for runtime validation: to allow using other annotations 
 just for compile time checks.
-
-### Licence
-
-MIT
