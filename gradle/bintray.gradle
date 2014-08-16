@@ -1,7 +1,7 @@
 import org._10ne.gradle.rest.RestTask
 
 buildscript {
-    apply from: "buildscript.gradle", to: buildscript
+    apply from: "gradle/buildscript.gradle", to: buildscript
 }
 
 apply plugin: 'com.jfrog.bintray'
