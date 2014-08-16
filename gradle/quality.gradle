@@ -1,0 +1,34 @@
+/* Quality plugins checks applied during "gradle check" execution, so travis build will fail in case of quality problems
+ * and its better to call check manually before push. */
+
+
+/* NOTE: findbugs support disabled, because it cause strange errors with java 8 (findbug 3)
+
+apply plugin: 'findbugs'
+
+// findbugs 3 support java 8, but requires java 7!
+// if you need java 6 suport use 2.0.3 version
+findbugs {
+    toolVersion = "3.0.0"
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+}*/
+
+
+apply plugin: 'pmd'
+
+pmd {
+    toolVersion = "5.1.2"
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+}
+
+
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = "5.7"
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+    configFile = file('/gradle/config/checkstyle/checkstyle.xml')
+}

@@ -31,7 +31,7 @@ public class GuiceMethodValidator implements MethodInterceptor {
     private ExecutableValidator validator;
 
     @Override
-    public Object invoke(MethodInvocation ctx) throws Throwable {
+    public Object invoke(final MethodInvocation ctx) throws Throwable {
         Set<ConstraintViolation<Object>> violations = validator.validateParameters(
                 ctx.getThis(),
                 ctx.getMethod(),
@@ -45,7 +45,7 @@ public class GuiceMethodValidator implements MethodInterceptor {
             );
         }
 
-        Object result = ctx.proceed();
+        final Object result = ctx.proceed();
 
         violations = validator.validateReturnValue(
                 ctx.getThis(),
@@ -63,9 +63,10 @@ public class GuiceMethodValidator implements MethodInterceptor {
         return result;
     }
 
-    private String getMessage(Member member, Object[] args, Set<? extends ConstraintViolation<?>> violations) {
+    private String getMessage(final Member member, final Object[] args,
+                              final Set<? extends ConstraintViolation<?>> violations) {
 
-        StringBuilder message = new StringBuilder();
+        final StringBuilder message = new StringBuilder();
         message.append(violations.size());
         message.append(" constraint violation(s) occurred during method validation.");
         message.append("\nConstructor or Method: ");
@@ -76,7 +77,7 @@ public class GuiceMethodValidator implements MethodInterceptor {
 
         int i = 1;
         for (ConstraintViolation<?> constraintViolation : violations) {
-            Path.Node leafNode = getLeafNode(constraintViolation);
+            final Path.Node leafNode = getLeafNode(constraintViolation);
 
             message.append("\n (");
             message.append(i);
@@ -102,8 +103,8 @@ public class GuiceMethodValidator implements MethodInterceptor {
         return message.toString();
     }
 
-    private Path.Node getLeafNode(ConstraintViolation<?> constraintViolation) {
-        Iterator<Path.Node> nodes = constraintViolation.getPropertyPath().iterator();
+    private Path.Node getLeafNode(final ConstraintViolation<?> constraintViolation) {
+        final Iterator<Path.Node> nodes = constraintViolation.getPropertyPath().iterator();
         Path.Node leafNode = null;
         while (nodes.hasNext()) {
             leafNode = nodes.next();

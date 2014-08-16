@@ -33,29 +33,30 @@ public class ValidationModule extends AbstractModule {
      *
      * @param factory base factory
      */
-    public ValidationModule(ValidatorFactory factory) {
+    public ValidationModule(final ValidatorFactory factory) {
         this.factory = factory;
     }
 
     @Override
     protected void configure() {
-        GuiceConstraintValidatorFactory constraintValidatorFactory = new GuiceConstraintValidatorFactory();
+        final GuiceConstraintValidatorFactory constraintValidatorFactory = new GuiceConstraintValidatorFactory();
         requestInjection(constraintValidatorFactory);
 
         /* Overriding just constraints factory to allow them use guice injections */
-        Validator validator = factory.usingContext()
+        final Validator validator = factory.usingContext()
                 .constraintValidatorFactory(constraintValidatorFactory)
                 .getValidator();
 
         bind(Validator.class).toInstance(validator);
         bind(ExecutableValidator.class).toInstance(validator.forExecutables());
 
-        GuiceMethodValidator interceptor = new GuiceMethodValidator();
+        final GuiceMethodValidator interceptor = new GuiceMethodValidator();
         requestInjection(interceptor);
 
         /* Using explicit annotation matching because annotations may be used just for compile time checks
         (see hibernate validator apt lib). Moreover it makes "automatic" validation more explicit.
-        Such annotation usage is contradict with its javadoc, but annotation name is ideal for use case, so why introduce new one).*/
+        Such annotation usage is contradict with its javadoc,
+        but annotation name is ideal for use case, so why introduce new one).*/
         bindInterceptor(Matchers.any(), Matchers.annotatedWith(ValidateOnExecution.class), interceptor);
         bindInterceptor(Matchers.annotatedWith(ValidateOnExecution.class), Matchers.any(), interceptor);
     }

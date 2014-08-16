@@ -24,12 +24,12 @@ Maven:
 <dependency>
   <groupId>ru.vyarus</groupId>
   <artifactId>guice-validator</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-validator</artifactId>
-  <version>5.1.1.Final</version>
+  <version>5.1.2.Final</version>
 </dependency>
 <dependency>
   <groupId>org.glassfish.web</groupId>
@@ -41,8 +41,8 @@ Maven:
 Gradle:
 
 ```groovy
-compile 'ru.vyarus:guice-validator:1.0.1'
-compile 'org.hibernate:hibernate-validator:5.1.1.Final'
+compile 'ru.vyarus:guice-validator:1.0.2'
+compile 'org.hibernate:hibernate-validator:5.1.2.Final'
 compile 'org.glassfish.web:javax.el:2.2.6'
 ```
 
@@ -142,3 +142,5 @@ Hibernate-validator provides annotation processor to perform additional checks i
 
 Because of this feature `@ValidateOnExecution` annotation chosen for runtime validation: to allow using other annotations 
 just for compile time checks.
+
+[![Slush java lib generator](http://img.shields.io/badge/Powered%20by-Slush%20java%20lib%20generator-orange.svg?style=flat-square)](https://github.com/xvik/slush-lib-java)

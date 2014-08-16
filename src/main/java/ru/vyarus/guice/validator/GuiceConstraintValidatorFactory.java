@@ -21,7 +21,7 @@ public class GuiceConstraintValidatorFactory implements ConstraintValidatorFacto
     private Injector injector;
 
     @Override
-    public <T extends ConstraintValidator<?, ?>> T getInstance(Class<T> key) {
+    public <T extends ConstraintValidator<?, ?>> T getInstance(final Class<T> key) {
         /* By default, all beans are in prototype scope, so new instance will be obtained each time.
          Validator implementer may declare it as singleton and manually maintain internal state
          (to re-use validators and simplify life for GC) */
@@ -29,7 +29,7 @@ public class GuiceConstraintValidatorFactory implements ConstraintValidatorFacto
     }
 
     @Override
-    public void releaseInstance(ConstraintValidator<?, ?> instance) {
+    public void releaseInstance(final ConstraintValidator<?, ?> instance) {
         /* Garbage collector will do it */
     }
 }
