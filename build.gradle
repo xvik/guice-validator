@@ -5,7 +5,7 @@ buildscript {
     apply from: "/gradle/buildscript.gradle", to: buildscript
 }
 
-version = '1.0.1'
+version = '1.0.2'
 group = 'ru.vyarus'
 description = 'Guice method validation through javax.validation implementation (hibernate-validator)'
 
