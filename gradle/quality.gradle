@@ -12,15 +12,35 @@ findbugs {
     toolVersion = "3.0.0"
     ignoreFailures = false
     sourceSets = [sourceSets.main]
-}*/
-
+}
+*/
 
 apply plugin: 'pmd'
 
 pmd {
     toolVersion = "5.1.2"
     ignoreFailures = false
+    ruleSetFiles = files("gradle/config/pmd/pmd.xml")
     sourceSets = [sourceSets.main]
+}
+
+gradle.taskGraph.afterTask { Task task, TaskState state ->
+    if ((task.name == 'pmdMain' || task.name == 'pmdTest') && state.failure) {
+        // print pmd errors
+        def outFile = task.name == 'pmdMain' ? 'main.xml' : 'test.xml'
+        def reportFile = file("${buildDir}/reports/pmd/${outFile}")
+
+        if(reportFile.exists()) {
+            def result = new XmlParser().parse(reportFile)
+
+            println ''
+            result.file.each { file ->
+                file.violation.each { violation ->
+                    println "${file.'@name'}:${violation.'@beginline'}: ${violation.text()}"
+                }
+            }
+        }
+    }
 }
 
 

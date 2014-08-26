@@ -12,8 +12,9 @@ logger.debug("$project.ext.bintray")
 def bintrayCfg = project.ext.bintray
 
 def bitrayApiUrl = "https://api.bintray.com"
-bintrayCfg.signApiUrl = "$bitrayApiUrl/gpg/$bintrayCfg.user/$bintrayCfg.repo/$project.name/versions/$project.version"
-bintrayCfg.publishApiUrl = "$bitrayApiUrl/content/$bintrayCfg.user/$bintrayCfg.repo/$project.name/$project.version/publish"
+// bintray will not accept snapshot versions, so its safe to fix version manually
+bintrayCfg.signApiUrl = ("$bitrayApiUrl/gpg/$bintrayCfg.user/$bintrayCfg.repo/$project.name/versions/$project.version".replace('-SNAPSHOT',''))
+bintrayCfg.publishApiUrl = ("$bitrayApiUrl/content/$bintrayCfg.user/$bintrayCfg.repo/$project.name/$project.version/publish".replace('-SNAPSHOT',''))
 
 bintray {
     user = bintrayCfg.user

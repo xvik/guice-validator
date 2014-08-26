@@ -21,6 +21,7 @@ import java.util.Set;
  * Based on {@code org.hibernate.validator.internal.cdi.interceptor.ValidationInterceptor}
  * from hibernate-validator-cdi-5.1.1.Final module.
  * </p>
+ *
  * @author hibernate-validator team
  * @since 24.06.2014
  */
@@ -33,31 +34,23 @@ public class GuiceMethodValidator implements MethodInterceptor {
     @Override
     public Object invoke(final MethodInvocation ctx) throws Throwable {
         Set<ConstraintViolation<Object>> violations = validator.validateParameters(
-                ctx.getThis(),
-                ctx.getMethod(),
-                ctx.getArguments()
+                ctx.getThis(), ctx.getMethod(), ctx.getArguments()
         );
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(
-                    getMessage(ctx.getMethod(), ctx.getArguments(), violations),
-                    violations
-            );
+                    getMessage(ctx.getMethod(), ctx.getArguments(), violations), violations);
         }
 
         final Object result = ctx.proceed();
 
         violations = validator.validateReturnValue(
-                ctx.getThis(),
-                ctx.getMethod(),
-                result
+                ctx.getThis(), ctx.getMethod(), result
         );
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(
-                    getMessage(ctx.getMethod(), ctx.getArguments(), violations),
-                    violations
-            );
+                    getMessage(ctx.getMethod(), ctx.getArguments(), violations), violations);
         }
 
         return result;
@@ -65,39 +58,27 @@ public class GuiceMethodValidator implements MethodInterceptor {
 
     private String getMessage(final Member member, final Object[] args,
                               final Set<? extends ConstraintViolation<?>> violations) {
-
-        final StringBuilder message = new StringBuilder();
-        message.append(violations.size());
-        message.append(" constraint violation(s) occurred during method validation.");
-        message.append("\nConstructor or Method: ");
-        message.append(member);
-        message.append("\nArgument values: ");
-        message.append(Arrays.toString(args));
-        message.append("\nConstraint violations: ");
-
+        final StringBuilder message = new StringBuilder(200)
+                .append(violations.size())
+                .append(" constraint violation(s) occurred during method validation.")
+                .append("\nConstructor or Method: ").append(member)
+                .append("\nArgument values: ").append(Arrays.toString(args))
+                .append("\nConstraint violations: ");
         int i = 1;
         for (ConstraintViolation<?> constraintViolation : violations) {
             final Path.Node leafNode = getLeafNode(constraintViolation);
-
-            message.append("\n (");
-            message.append(i);
-            message.append(")");
-            message.append(" Kind: ");
-            message.append(leafNode.getKind());
+            message.append("\n (")
+                    .append(i++)
+                    .append(") Kind: ")
+                    .append(leafNode.getKind());
             if (leafNode.getKind() == ElementKind.PARAMETER) {
-                message.append("\n parameter index: ");
-                message.append(leafNode.as(Path.ParameterNode.class).getParameterIndex());
+                message.append("\n parameter index: ")
+                        .append(leafNode.as(Path.ParameterNode.class).getParameterIndex());
             }
-            message.append("\n message: ");
-            message.append(constraintViolation.getMessage());
-            message.append("\n root bean: ");
-            message.append(constraintViolation.getRootBean());
-            message.append("\n property path: ");
-            message.append(constraintViolation.getPropertyPath());
-            message.append("\n constraint: ");
-            message.append(constraintViolation.getConstraintDescriptor().getAnnotation());
-
-            i++;
+            message.append("\n message: ").append(constraintViolation.getMessage())
+                    .append("\n root bean: ").append(constraintViolation.getRootBean())
+                    .append("\n property path: ").append(constraintViolation.getPropertyPath())
+                    .append("\n constraint: ").append(constraintViolation.getConstraintDescriptor().getAnnotation());
         }
 
         return message.toString();

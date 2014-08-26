@@ -5,7 +5,6 @@ buildscript {
     apply from: "gradle/buildscript.gradle", to: buildscript
 }
 
-version = '1.0.2'
 group = 'ru.vyarus'
 description = 'Guice method validation through javax.validation implementation (hibernate-validator)'
 
@@ -56,6 +55,7 @@ sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
 apply from: 'gradle/github.gradle'
+apply from: 'gradle/release.gradle'
 apply from: 'gradle/maven.gradle'
 apply from: 'gradle/bintray.gradle'
 apply from: 'gradle/quality.gradle'
@@ -89,11 +89,12 @@ task showDependenciesTree(dependsOn: 'htmlDependencyReport', description:
     Desktop.getDesktop().open(file('/build/reports/project/dependencies/root.html'))
 }
 
-
 task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal', description: 'Install to local maven repository') << {
     logger.warn "INSTALLED $project.group:$project.name:$project.version"
 }
 
-task release(dependsOn: [bintrayUpload, bintraySign], description: 'Publish version to bintray') << {
+//release task provided by gradle-release plugin
+createReleaseTag.dependsOn bintrayUpload, bintraySign
+release.doLast {
     logger.warn "RELEASED $project.group:$project.name:$project.version"
 }
