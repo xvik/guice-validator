@@ -20,6 +20,7 @@ project.ext {
         tags = ['guice', 'validation', 'hibernate-validator']
         dryRun = false // whether to run this as dry-run, without deploying (TEST RUN)
         publish = true //If version should be auto published after an upload
+        signFiles = true // true to sign files on bintray (certificate must be installed on bintray account)
     }
     license = 'MIT'
     licenseDesc = 'The MIT License'
@@ -55,9 +56,9 @@ sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
 apply from: 'gradle/github.gradle'
+apply from: 'gradle/bintray.gradle'
 apply from: 'gradle/release.gradle'
 apply from: 'gradle/maven.gradle'
-apply from: 'gradle/bintray.gradle'
 apply from: 'gradle/quality.gradle'
 
 
@@ -91,10 +92,4 @@ task showDependenciesTree(dependsOn: 'htmlDependencyReport', description:
 
 task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal', description: 'Install to local maven repository') << {
     logger.warn "INSTALLED $project.group:$project.name:$project.version"
-}
-
-//release task provided by gradle-release plugin
-createReleaseTag.dependsOn bintrayUpload, bintraySign
-release.doLast {
-    logger.warn "RELEASED $project.group:$project.name:$project.version"
 }

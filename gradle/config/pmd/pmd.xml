@@ -30,6 +30,16 @@
             <property name="maxmethods" value="25"/>
         </properties>
     </rule>
+    <rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <property name="reportLevel" value="11"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/java/codesize.xml/NPathComplexity">
+        <properties>
+            <property name="minimum" value="201"/>
+        </properties>
+    </rule>
 
     <rule ref="rulesets/java/controversial.xml">
         <exclude name="AtLeastOneConstructor"/>
@@ -87,6 +97,7 @@
     <rule ref="rulesets/java/logging-jakarta-commons.xml">
         <exclude name="UseCorrectExceptionLogging" />
         <exclude name="GuardDebugLogging" />
+        <exclude name="GuardLogStatement"/>
     </rule>
 
     <rule ref="rulesets/java/logging-java.xml">
@@ -113,11 +124,14 @@
     <rule ref="rulesets/java/strictexception.xml">
         <exclude name="SignatureDeclareThrowsException" />
         <exclude name="AvoidCatchingGenericException" />
+        <exclude name="AvoidCatchingThrowable"/>
     </rule>
 
     <rule ref="rulesets/java/strings.xml" />
 
-    <rule ref="rulesets/java/sunsecure.xml" />
+    <rule ref="rulesets/java/sunsecure.xml">
+        <exclude name="ArrayIsStoredDirectly"/>
+    </rule>
 
     <rule ref="rulesets/java/typeresolution.xml">
         <exclude name="SignatureDeclareThrowsException" />
