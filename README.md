@@ -143,5 +143,9 @@ Hibernate-validator provides annotation processor to perform additional checks i
 Because of this feature `@ValidateOnExecution` annotation chosen for runtime validation: to allow using other annotations 
 just for compile time checks.
 
+### Supplement
+
+[validator-collection](https://github.com/jirutka/validator-collection) annotations to validate collections of simple types
+
 -
 [![Slush java lib generator](http://img.shields.io/badge/Powered%20by-Slush%20java%20lib%20generator-orange.svg?style=flat-square)](https://github.com/xvik/slush-lib-java)
