@@ -52,3 +52,29 @@ checkstyle {
     sourceSets = [sourceSets.main]
     configFile = file('gradle/config/checkstyle/checkstyle.xml')
 }
+
+def checkType;
+task checkstyleReport << {
+    if (file("$buildDir/reports/checkstyle/${checkType}.xml").exists()) {
+        def htmlReportPath = "$buildDir/reports/checkstyle/${checkType}.html"
+        ant.xslt(in: "$buildDir/reports/checkstyle/${checkType}.xml",
+                style:"gradle/config/checkstyle/checkstyle-noframes-sorted.xsl",
+                out: htmlReportPath
+        )
+        logger.error("Checkstyle HTML report: file:///${file(htmlReportPath).canonicalPath.replaceAll("\\\\", "/")}")
+    }
+}
+
+gradle.taskGraph.afterTask {Task task, TaskState state ->
+    if(state.failure) {
+        if (task.name in ['checkstyleMain', 'checkstyleTest']) {
+            checkstyleReport {
+                def matcher = task.name =~ /^checkstyle(.*)$/
+                if (matcher.matches()) {
+                    checkType = matcher.group(1).toLowerCase()
+                }
+            }
+            checkstyleReport.execute()
+        }
+    }
+}

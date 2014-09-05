@@ -73,15 +73,6 @@
         <exclude name="TooManyStaticImports" />
     </rule>
 
-    <rule ref="rulesets/java/j2ee.xml">
-        <exclude name="MDBAndSessionBeanNamingConvention" />
-        <exclude name="RemoteSessionInterfaceNamingConvention" />
-        <exclude name="LocalInterfaceSessionNamingConvention" />
-        <exclude name="LocalHomeNamingConvention" />
-        <exclude name="RemoteInterfaceNamingConvention" />
-        <exclude name="StaticEJBFieldShouldBeFinal" />
-    </rule>
-
     <rule ref="rulesets/java/javabeans.xml">
         <exclude name="BeanMembersShouldSerialize" />
         <exclude name="MissingSerialVersionUID" />
