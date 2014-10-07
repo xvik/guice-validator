@@ -17,7 +17,7 @@ Features:
 Releases are published to [bintray jcenter](https://bintray.com/bintray/jcenter) (package appear immediately after release) 
 and then to maven central (require few days after release to be published). 
 
-[![Download](https://api.bintray.com/packages/vyarus/xvik/guice-validator/images/download.png) ](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
+[![Download](https://api.bintray.com/packages/vyarus/xvik/guice-validator/images/download.svg) ](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator)
 
 Maven:
