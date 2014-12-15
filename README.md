@@ -1,4 +1,5 @@
 #Guice validator
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/xvik/guice-validator)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
 [![Build Status](http://img.shields.io/travis/xvik/guice-validator.svg?style=flat&branch=master)](https://travis-ci.org/xvik/guice-validator)
 [![Coverage Status](https://img.shields.io/coveralls/xvik/guice-validator.svg?style=flat)](https://coveralls.io/r/xvik/guice-validator?branch=master)
@@ -31,7 +32,7 @@ Maven:
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-validator</artifactId>
-  <version>5.1.2.Final</version>
+  <version>5.1.3.Final</version>
 </dependency>
 <dependency>
   <groupId>org.glassfish.web</groupId>
@@ -44,7 +45,7 @@ Gradle:
 
 ```groovy
 compile 'ru.vyarus:guice-validator:1.0.2'
-compile 'org.hibernate:hibernate-validator:5.1.2.Final'
+compile 'org.hibernate:hibernate-validator:5.1.3.Final'
 compile 'org.glassfish.web:javax.el:2.2.6'
 ```
 

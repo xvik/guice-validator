@@ -1,6 +1,10 @@
 /* Quality plugins checks applied during "gradle check" execution, so travis build will fail in case of quality problems
  * and its better to call check manually before push. */
 
+
+// enable detailed warnings (all options http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJCABJ)
+compileJava.options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+
 apply plugin: 'findbugs'
 
 // findbugs 3 supports java 8, but requires java 7!
@@ -60,7 +64,8 @@ gradle.taskGraph.afterTask { Task task, TaskState state ->
                 result.BugInstance.each { bug ->
                     println ''
                     def msg = bug.LongMessage[0]
-                    println "[${cat[bug.'@category']}] ${msg.text()} [${bug.'@type'}]\n${desc[bug.'@type']}"
+                    def src = bug.SourceLine[0]
+                    logger.error "[${cat[bug.'@category']}] ${src.'@sourcepath'}:${src.'@start'}:${src.'@end'} ${msg.text()} [${bug.'@type'}]\n${desc[bug.'@type']}"
                 }
                 println ''
             }
@@ -83,10 +88,17 @@ gradle.taskGraph.afterTask { Task task, TaskState state ->
 apply plugin: 'pmd'
 
 pmd {
-    toolVersion = "5.1.2"
+    toolVersion = "5.2.2"
     ignoreFailures = false
     ruleSetFiles = files("gradle/config/pmd/pmd.xml")
     sourceSets = [sourceSets.main]
+}
+// pmd 5.2 was split into two jars, have to declare dependencies manually to work properly (waiting gradle support)
+dependencies {
+    pmd(
+            'net.sourceforge.pmd:pmd-core:5.2.2',
+            'net.sourceforge.pmd:pmd-java:5.2.2'
+    )
 }
 
 gradle.taskGraph.afterTask { Task task, TaskState state ->
@@ -101,7 +113,7 @@ gradle.taskGraph.afterTask { Task task, TaskState state ->
             println ''
             result.file.each { file ->
                 file.violation.each { violation ->
-                    println "${file.'@name'}:${violation.'@beginline'}: ${violation.text()}${violation.'@externalInfoUrl'}\n"
+                    logger.error "${file.'@name'}:${violation.'@beginline'}:${violation.'@endline'} ${violation.text()}${violation.'@externalInfoUrl'}\n"
                 }
             }
         }
@@ -112,7 +124,7 @@ gradle.taskGraph.afterTask { Task task, TaskState state ->
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = "5.7"
+    toolVersion = "6.1.1"
     ignoreFailures = false
     sourceSets = [sourceSets.main]
     configFile = file('gradle/config/checkstyle/checkstyle.xml')

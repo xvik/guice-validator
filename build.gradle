@@ -11,7 +11,7 @@ description = 'Guice method validation through javax.validation implementation (
 // convention: project.name == github project name == bintray package page
 project.ext {
     build = {
-        gradle = 2.1
+        gradle = '2.2.1'
         java = 1.6
         // if not empty runs animal sniffer on compile to guarantee binary compatibility; set '' to disable
         signature = 'org.codehaus.mojo.signature:java16-sun:+@signature'
@@ -26,8 +26,13 @@ project.ext {
         tags = ['guice', 'validation', 'hibernate-validator']
         dryRun = false // whether to run this as dry-run, without deploying (TEST RUN)
         publish = true //If version should be auto published after an upload
+
         signFiles = true // true to gpg sign files on bintray (certificate must be installed on bintray account)
         gpgPassphrase = project.hasProperty('gpgPassphrase') ? gpgPassphrase : '' // optionally configured in ~/.gradle/gradle.properties if certificate requires it
+
+        mavenCentralSync = true // true to sync with maven central (files signing required)
+        ossUser = project.hasProperty('sonatypeUser') ? sonatypeUser : 'USER' // configured in ~/.gradle/gradle.properties
+        ossPassword = project.hasProperty('sonatypePassword') ? sonatypePassword : 'PASSWORD' // configured in ~/.gradle/gradle.properties
     }
     license = 'MIT'
     licenseDesc = 'The MIT License'
@@ -75,11 +80,11 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.inject:guice:3.0'
+    compile 'com.google.inject:guice:4.0-beta5'
     compile 'javax.validation:validation-api:1.1.0.Final'
 
-    testCompile 'junit:junit:4.11'
-    testCompile 'org.hibernate:hibernate-validator:5.1.2.Final'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.hibernate:hibernate-validator:5.1.3.Final'
     testCompile 'org.glassfish.web:javax.el:2.2.6'
 }
 

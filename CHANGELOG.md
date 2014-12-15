@@ -1,3 +1,5 @@
+* Update guice 3.0 -> 4.0-beta5
+
 ### 1.0.2 (2014-08-16)
 
 * Fix pmd/chcekstyle warnings
