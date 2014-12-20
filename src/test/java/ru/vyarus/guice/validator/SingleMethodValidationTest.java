@@ -1,14 +1,15 @@
 package ru.vyarus.guice.validator;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import org.junit.BeforeClass;
+
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runners.Parameterized;
 
 import javax.inject.Singleton;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 import javax.validation.executable.ValidateOnExecution;
+import java.util.Collection;
 
 /**
  * Checks validation of only one method in service.
@@ -16,29 +17,39 @@ import javax.validation.executable.ValidateOnExecution;
  * @author Vyacheslav Rusakov
  * @since 24.06.2014
  */
-public class SingleMethodValidationTest {
+public class SingleMethodValidationTest extends AbstractParameterizedTest<SingleMethodValidationTest.SampleService> {
 
-    private static SampleService sampleService;
+    public SingleMethodValidationTest(String type, SampleService service) {
+        super(type, service);
+    }
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        Injector injector = Guice.createInjector(new ValidationModule());
-        sampleService = injector.getInstance(SampleService.class);
+
+    @Parameterized.Parameters(name = "{index}: {0}")
+    public static Collection<Object[]> generateData() {
+        return AbstractParameterizedTest.generateData(SampleService.class);
     }
 
     @Test
     public void testMethodValidation() throws Exception {
-        sampleService.noValidation(null);
+        if (isExplicit()) {
+            service.noValidation(null);
+        } else {
+            try {
+                service.noValidation(null);
+                Assert.assertTrue(false);
+            } catch (ConstraintViolationException ex) {
+            }
+        }
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void testMethodValidationEnabledFail() throws Exception {
-        sampleService.enabledValidation(null);
+        service.enabledValidation(null);
     }
 
     @Test
     public void testMethodValidationEnabled() throws Exception {
-        sampleService.enabledValidation(new Object());
+        service.enabledValidation(new Object());
     }
 
     @Singleton

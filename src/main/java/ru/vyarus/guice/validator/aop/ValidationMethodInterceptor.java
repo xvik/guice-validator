@@ -1,4 +1,4 @@
-package ru.vyarus.guice.validator;
+package ru.vyarus.guice.validator.aop;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -26,7 +26,7 @@ import java.util.Set;
  * @since 24.06.2014
  */
 @Singleton
-public class GuiceMethodValidator implements MethodInterceptor {
+public class ValidationMethodInterceptor implements MethodInterceptor {
 
     @Inject
     private ExecutableValidator validator;

@@ -1,4 +1,6 @@
 * Update guice 3.0 -> 4.0-beta5
+* Add binding for ValidatorFactory instance
+* Add ImplicitValidationModule to apply validation based on validation annotations only (without need for explicit @ValidateOnExecution marker)
 
 ### 1.0.2 (2014-08-16)
 

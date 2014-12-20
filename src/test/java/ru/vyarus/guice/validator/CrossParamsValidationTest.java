@@ -1,12 +1,11 @@
 package ru.vyarus.guice.validator;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runners.Parameterized;
 import ru.vyarus.guice.validator.crossparams.ComplexParamsService;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Collection;
 
 /**
  * Checks custom cross parameters validator.
@@ -14,22 +13,24 @@ import javax.validation.ConstraintViolationException;
  * @author Vyacheslav Rusakov
  * @since 25.06.2014
  */
-public class CrossParamsValidationTest {
-    private static ComplexParamsService complexParamsService;
+public class CrossParamsValidationTest extends AbstractParameterizedTest<ComplexParamsService> {
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        Injector injector = Guice.createInjector(new ValidationModule());
-        complexParamsService = injector.getInstance(ComplexParamsService.class);
+    public CrossParamsValidationTest(String type, ComplexParamsService service) {
+        super(type, service);
+    }
+
+    @Parameterized.Parameters(name = "{index}: {0}")
+    public static Collection<Object[]> generateData() {
+        return AbstractParameterizedTest.generateData(ComplexParamsService.class);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void testValidationFail() throws Exception {
-        complexParamsService.action(2, 12);
+        service.action(2, 12);
     }
 
     @Test
     public void testValidation() throws Exception {
-        complexParamsService.action(1, 12);
+        service.action(1, 12);
     }
 }

@@ -1,30 +1,27 @@
 package ru.vyarus.guice.validator;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
+import ru.vyarus.guice.validator.aop.ValidationMethodInterceptor;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.validation.executable.ExecutableValidator;
 import javax.validation.executable.ValidateOnExecution;
 
 /**
- * Adds {@code Validator} bean to guice context (to make it available for manual validations).
+ * Explicit validation activation.
  * Method validations will activate by annotation {@code ValidateOnExecution} on class or method.
  *
  * @author Vyacheslav Rusakov
+ * @see ru.vyarus.guice.validator.ImplicitValidationModule for implicit validation (without additinoal annotation)
  * @since 24.06.2014
  */
-public class ValidationModule extends AbstractModule {
+public class ValidationModule extends AbstractValidationModule {
 
-    private ValidatorFactory factory;
 
     /**
      * Creates module using default validator factory.
      */
     public ValidationModule() {
-        this(Validation.buildDefaultValidatorFactory());
+        // default validation factory
     }
 
     /**
@@ -34,25 +31,11 @@ public class ValidationModule extends AbstractModule {
      * @param factory base factory
      */
     public ValidationModule(final ValidatorFactory factory) {
-        this.factory = factory;
+        super(factory);
     }
 
     @Override
-    protected void configure() {
-        final GuiceConstraintValidatorFactory constraintValidatorFactory = new GuiceConstraintValidatorFactory();
-        requestInjection(constraintValidatorFactory);
-
-        /* Overriding just constraints factory to allow them use guice injections */
-        final Validator validator = factory.usingContext()
-                .constraintValidatorFactory(constraintValidatorFactory)
-                .getValidator();
-
-        bind(Validator.class).toInstance(validator);
-        bind(ExecutableValidator.class).toInstance(validator.forExecutables());
-
-        final GuiceMethodValidator interceptor = new GuiceMethodValidator();
-        requestInjection(interceptor);
-
+    protected void configureAop(final ValidationMethodInterceptor interceptor) {
         /* Using explicit annotation matching because annotations may be used just for compile time checks
         (see hibernate validator apt lib). Moreover it makes "automatic" validation more explicit.
         Such annotation usage is contradict with its javadoc,

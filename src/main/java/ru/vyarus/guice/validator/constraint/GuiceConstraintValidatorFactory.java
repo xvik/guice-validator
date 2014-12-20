@@ -1,4 +1,4 @@
-package ru.vyarus.guice.validator;
+package ru.vyarus.guice.validator.constraint;
 
 import com.google.inject.Injector;
 

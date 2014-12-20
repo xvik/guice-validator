@@ -1,13 +1,12 @@
 package ru.vyarus.guice.validator;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runners.Parameterized;
 import ru.vyarus.guice.validator.simple.SimpleBean;
 import ru.vyarus.guice.validator.simple.SimpleService;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Collection;
 
 /**
  * Checks the simplest validation cases (params/return value)
@@ -15,53 +14,54 @@ import javax.validation.ConstraintViolationException;
  * @author Vyacheslav Rusakov
  * @since 24.06.2014
  */
-public class SimpleValidationTest {
+public class SimpleValidationTest extends AbstractParameterizedTest<SimpleService> {
 
-    private static SimpleService simpleService;
+    public SimpleValidationTest(String type, SimpleService service) {
+        super(type, service);
+    }
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        Injector injector = Guice.createInjector(new ValidationModule());
-        simpleService = injector.getInstance(SimpleService.class);
+    @Parameterized.Parameters(name = "{index}: {0}")
+    public static Collection<Object[]> generateData() {
+        return AbstractParameterizedTest.generateData(SimpleService.class);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void SimpleBeanRequiredFail() throws Exception {
-        simpleService.beanRequired(null);
+        service.beanRequired(null);
     }
 
     @Test
     public void SimpleBeanRequired() throws Exception {
-        simpleService.beanRequired(new SimpleBean());
+        service.beanRequired(new SimpleBean());
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void SimpleValidBeanRequiredFail() throws Exception {
-        simpleService.validBeanRequired(new SimpleBean());
+        service.validBeanRequired(new SimpleBean());
     }
 
     @Test
     public void SimpleValidBeanRequired() throws Exception {
-        simpleService.validBeanRequired(new SimpleBean("user", 10));
+        service.validBeanRequired(new SimpleBean("user", 10));
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void SimpleNotNullReturnFail() throws Exception {
-        simpleService.notNullReturn(null);
+        service.notNullReturn(null);
     }
 
     @Test
     public void SimpleNotNullReturn() throws Exception {
-        simpleService.notNullReturn(new SimpleBean());
+        service.notNullReturn(new SimpleBean());
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void SimpleValidReturnFail() throws Exception {
-        simpleService.validReturn(new SimpleBean());
+        service.validReturn(new SimpleBean());
     }
 
     @Test
     public void SimpleValidReturn() throws Exception {
-        simpleService.notNullReturn(new SimpleBean("user", 10));
+        service.notNullReturn(new SimpleBean("user", 10));
     }
 }
