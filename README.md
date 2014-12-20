@@ -10,8 +10,8 @@ Allows to validate service method parameters and return value using javax.valida
 Suggest to use it with [hibernate-validator](http://hibernate.org/validator/) (but can be used with other implementations).
 
 Features:
-* Explicit and implicit validation modes (driven by additional annotation or directly by validation annotations)
 * Trigger validation on service method call
+* Explicit and implicit validation modes (driven by additional annotation or directly by validation annotations)
 * Inject dependencies to custom validators
 
 ### Setup
@@ -83,7 +83,7 @@ To use custom (pre-configured) validation factory:
 install(new ImplicitValidationModule(yourValidationFactory));
 ```
 
-In order to exclude types from automatic validation use custom matcher:
+In order to configure types from automatic validation use custom matcher (e.g. to exclude some classes):
 
 ```java
 install(new ImplicitValidationModule()
