@@ -10,6 +10,7 @@ Allows to validate service method parameters and return value using javax.valida
 Suggest to use it with [hibernate-validator](http://hibernate.org/validator/) (but can be used with other implementations).
 
 Features:
+* Explicit and implicit validation modes (driven by additional annotation or directly by validation annotations)
 * Trigger validation on service method call
 * Inject dependencies to custom validators
 
@@ -27,7 +28,7 @@ Maven:
 <dependency>
   <groupId>ru.vyarus</groupId>
   <artifactId>guice-validator</artifactId>
-  <version>1.0.2</version>
+  <version>1.1.0</version>
 </dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
@@ -44,12 +45,16 @@ Maven:
 Gradle:
 
 ```groovy
-compile 'ru.vyarus:guice-validator:1.0.2'
+compile 'ru.vyarus:guice-validator:1.1.0'
 compile 'org.hibernate:hibernate-validator:5.1.3.Final'
 compile 'org.glassfish.web:javax.el:2.2.6'
 ```
 
 ### Install the Guice module
+
+#### Explicit module
+
+Explicit module requires additional annotation `@ValidateOnExecution` on class or method to trigger runtime validation.
 
 ```java
 install(new ValidationModule());
@@ -63,14 +68,31 @@ install(new ValidationModule(yourValidationFactory));
 
 To use custom (pre-configured) validation factory.
 
-### Usage
+#### Implicit module
 
-To enable runtime method validation, annotate entire class or method with `@ValidateOnExecution`.
-Now all parameter or return value annotations will trigger validations on method execution. 
+Implicit mode is the same as explicit, but without requirement for `@ValidateOnExecution` annotation: just method or
+method parameter must be annotated with `@Valid` or any constraint annotation.
+
+```java
+install(new ImplicitValidationModule());
+```
+
+To use custom (pre-configured) validation factory:
+
+```java
+install(new ImplicitValidationModule(yourValidationFactory));
+```
+
+In order to exclude types from automatic validation use custom matcher:
+
+```java
+install(new ImplicitValidationModule()
+                .withMatcher(Matchers.not(Matchers.annotatedWith(SuppressValidation.class))))
+```
 
 ### Examples
 
-Assuming `@ValidateOnExecution` applied to class.
+Note: if explicit module (`ValidationModule`) used `@ValidateOnExecution` should be applied to class or method.
 
 Annotating method parameter with `@NotNull`
 
@@ -105,6 +127,21 @@ add `@Valid` annotation.
 public SimpleBean beanRequired(@NotNull @Valid SimpleBean bean) 
 ```
 
+`@Valid` used on method means validation of returned object:
+
+```java
+@Valid @NotNull
+public SimpleBean validReturn(SimpleBean bean)
+```
+
+[Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/simple)
+
+##### Other samples
+
+* [Cross parameters check](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/crossparams)
+* [Composed validation annotation (aggregating few annotations into single one)](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/compositeannotation)
+* [Scripted check (hibernate-validator feature)](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/script)
+
 ##### Custom validator
 
 Guice injections could be used when writing custom validators
@@ -127,7 +164,39 @@ public class ComplexBeanValidator implements ConstraintValidator<ComplexBeanVali
         return value == null || customService.getRequiredValue().equals(value.getUser());
     }
 }
-``` 
+
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = {ComplexBeanValidator.class})
+@Documented
+public @interface ComplexBeanValid {
+    /* ideally there should be just localization key, but for simplicity just message */
+    String message() default "Bean is not valid";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+```
+
+[Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/customtype)
+
+### Bound objects
+
+Both modules bind extra objects to context (available for injection) :
+
+* `javax.validation.Validator`
+* `javax.validation.executable.ExecutableValidator`
+* `javax.validation.ValidatorFactory`
+
+### Limitations
+
+Guice aop is applied only for objects constructed by guice, so validation will not work for types
+bound by instance:
+
+```java
+bind(MyType.class).toInstance(new MyType());
+```
 
 ### More
 
@@ -143,7 +212,7 @@ Also, read hibernate-validator docs:
 
 Hibernate-validator provides annotation processor to perform additional checks in compile time: [see docs](http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/validator-annotation-processor.html)
 
-Because of this feature `@ValidateOnExecution` annotation chosen for runtime validation: to allow using other annotations 
+Because of this feature `@ValidateOnExecution` annotation chosen for runtime validation (explicit module): to allow using other annotations
 just for compile time checks.
 
 ### Supplement

@@ -9,7 +9,7 @@ import javax.validation.ValidatorFactory;
 
 /**
  * Implicit validation activation.
- * Validation executed when {@code @Valid} or any {@code Constraint} annotation found on method or method parameter.
+ * Validation executed when {@code @Valid} or any {@code @Constraint} annotation found on method or method parameter.
  *
  * @author Vyacheslav Rusakov
  * @since 19.12.2014
