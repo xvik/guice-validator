@@ -72,21 +72,7 @@ apply from: 'gradle/release.gradle'
 apply from: 'gradle/maven.gradle'
 apply from: 'gradle/quality.gradle'
 
-
-repositories {
-    jcenter()
-    mavenCentral()
-    mavenLocal()
-}
-
-dependencies {
-    compile 'com.google.inject:guice:4.0-beta5'
-    compile 'javax.validation:validation-api:1.1.0.Final'
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.hibernate:hibernate-validator:5.1.3.Final'
-    testCompile 'org.glassfish.web:javax.el:2.2.6'
-}
+apply from: 'build-deps.gradle'
 
 task checkOutOfDate(type: DependencyUpdatesTask, description: 'Checks dependencies updates availability') {
     revision 'release'

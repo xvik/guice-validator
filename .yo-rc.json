@@ -1,0 +1,20 @@
+{
+  "generator-lib-java": {
+    "githubUser": "xvik",
+    "authorName": "Vyacheslav Rusakov",
+    "authorEmail": "vyarus@gmail.com",
+    "libName": "guice-validator",
+    "libGroup": "ru.vyarus",
+    "libPackage": "ru.vyarus.guice.validator",
+    "libVersion": "0.1.0",
+    "libDesc": "Guice method validation through javax.validation implementation (hibernate-validator)",
+    "targetJava": "1.6",
+    "libTags": "guice, validation, hibernate-validator",
+    "bintrayUser": "vyarus",
+    "bintrayRepo": "xvik",
+    "bintraySignFiles": true,
+    "mavenCentralSync": true,
+    "enableQualityChecks": true,
+    "usedGeneratorVersion": "1.0.0"
+  }
+}
