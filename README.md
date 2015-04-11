@@ -37,7 +37,7 @@ Maven:
 </dependency>
 <dependency>
   <groupId>org.glassfish.web</groupId>
-  <artifactId>web:javax.el</artifactId>
+  <artifactId>javax.el</artifactId>
   <version>2.2.6</version>
 </dependency>
 ```
