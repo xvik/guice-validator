@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runners.Parameterized;
 import ru.vyarus.guice.validator.simple.SimpleService;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -17,7 +16,7 @@ import java.util.Collection;
  * @author Vyacheslav Rusakov
  * @since 20.12.2014
  */
-public class InstanceBindingTest extends AbstractParameterizedTest<SimpleService>{
+public class InstanceBindingTest extends AbstractParameterizedTest<SimpleService> {
 
     public InstanceBindingTest(String type, SimpleService service) {
         super(type, service);
@@ -25,11 +24,11 @@ public class InstanceBindingTest extends AbstractParameterizedTest<SimpleService
 
     @Parameterized.Parameters(name = "{index}: {0}")
     public static Collection<Object[]> generateData() {
-        final Class type = SimpleService.class;
+        final Class<SimpleService> type = SimpleService.class;
         final Module module = new AbstractModule() {
             @Override
             protected void configure() {
-                bind(SimpleService.class).toInstance(new SimpleService());
+                bind(type).toInstance(new SimpleService());
             }
         };
         return Arrays.asList(new Object[][]{
