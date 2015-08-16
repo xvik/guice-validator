@@ -9,6 +9,6 @@ dependencies {
     compile 'javax.validation:validation-api:1.1.0.Final'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.hibernate:hibernate-validator:5.1.3.Final'
+    testCompile 'org.hibernate:hibernate-validator:5.2.1.Final'
     testCompile 'org.glassfish.web:javax.el:2.2.6'
 }
