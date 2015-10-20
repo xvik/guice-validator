@@ -20,7 +20,7 @@ Releases are published to [bintray jcenter](https://bintray.com/bintray/jcenter)
 and then to maven central (require few days after release to be published). 
 
 [![Download](https://api.bintray.com/packages/vyarus/xvik/guice-validator/images/download.svg) ](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator)
+[![Maven Central](https://img.shields.io/maven-central/v/ru.vyarus/guice-validator.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator)
 
 Maven:
 
