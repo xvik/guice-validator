@@ -56,7 +56,6 @@ public class ValidationMethodInterceptor implements MethodInterceptor {
         return result;
     }
 
-    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     private String getMessage(final Member member, final Object[] args,
                               final Set<? extends ConstraintViolation<?>> violations) {
         final StringBuilder message = new StringBuilder(200)
