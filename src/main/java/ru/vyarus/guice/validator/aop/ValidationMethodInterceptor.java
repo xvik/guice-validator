@@ -33,6 +33,12 @@ public class ValidationMethodInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(final MethodInvocation ctx) throws Throwable {
+
+        Class[] groups = new Class[0];
+        if (ctx.getMethod().isAnnotationPresent(ValidationGroups.class)) {
+            groups = ctx.getMethod().getAnnotation(ValidationGroups.class).value();
+        }
+
         Set<ConstraintViolation<Object>> violations = validator.validateParameters(
                 ctx.getThis(), ctx.getMethod(), ctx.getArguments()
         );
