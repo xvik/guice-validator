@@ -32,10 +32,17 @@ public class GuiceMethodValidator implements MethodInterceptor {
 
     @Override
     public Object invoke(final MethodInvocation ctx) throws Throwable {
+
+        Class[] groups = new Class[0];
+        if (ctx.getMethod().isAnnotationPresent(ValidationGroups.class)) {
+            groups = ctx.getMethod().getAnnotation(ValidationGroups.class).value();
+        }
+
         Set<ConstraintViolation<Object>> violations = validator.validateParameters(
                 ctx.getThis(),
                 ctx.getMethod(),
-                ctx.getArguments()
+                ctx.getArguments(),
+                groups
         );
 
         if (!violations.isEmpty()) {
@@ -50,7 +57,8 @@ public class GuiceMethodValidator implements MethodInterceptor {
         violations = validator.validateReturnValue(
                 ctx.getThis(),
                 ctx.getMethod(),
-                result
+                result,
+                groups
         );
 
         if (!violations.isEmpty()) {
