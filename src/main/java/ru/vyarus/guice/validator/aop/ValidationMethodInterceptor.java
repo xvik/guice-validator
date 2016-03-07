@@ -2,6 +2,7 @@ package ru.vyarus.guice.validator.aop;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import ru.vyarus.guice.validator.ValidationGroups;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,8 +34,14 @@ public class ValidationMethodInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(final MethodInvocation ctx) throws Throwable {
+
+        Class[] groups = new Class[0];
+        if (ctx.getMethod().isAnnotationPresent(ValidationGroups.class)) {
+            groups = ctx.getMethod().getAnnotation(ValidationGroups.class).value();
+        }
+
         Set<ConstraintViolation<Object>> violations = validator.validateParameters(
-                ctx.getThis(), ctx.getMethod(), ctx.getArguments()
+                ctx.getThis(), ctx.getMethod(), ctx.getArguments(), groups
         );
 
         if (!violations.isEmpty()) {
@@ -45,7 +52,7 @@ public class ValidationMethodInterceptor implements MethodInterceptor {
         final Object result = ctx.proceed();
 
         violations = validator.validateReturnValue(
-                ctx.getThis(), ctx.getMethod(), result
+                ctx.getThis(), ctx.getMethod(), result, groups
         );
 
         if (!violations.isEmpty()) {
