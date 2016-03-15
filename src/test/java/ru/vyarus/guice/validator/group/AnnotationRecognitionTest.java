@@ -4,10 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import ru.vyarus.guice.validator.group.annotation.GroupUtils;
 import ru.vyarus.guice.validator.group.annotation.ValidationGroups;
-import ru.vyarus.guice.validator.group.support.simple.CompositeAnnService;
-import ru.vyarus.guice.validator.group.support.simple.CompositeAnnService2;
-import ru.vyarus.guice.validator.group.support.simple.CompositeAnnService3;
-import ru.vyarus.guice.validator.group.support.simple.SimpleAnnService;
+import ru.vyarus.guice.validator.group.support.simple.*;
 
 import java.util.List;
 
@@ -75,5 +72,20 @@ public class AnnotationRecognitionTest {
 
         res = GroupUtils.findAnnotations(CompositeAnnService3.class.getMethod("custom"));
         Assert.assertEquals(3, res.size());
+    }
+
+    @Test
+    public void checkInheritance() throws Exception {
+        List<ValidationGroups> res = GroupUtils.findAnnotations(InheritedService.class.getMethod("groupInherit"));
+        Assert.assertEquals(1, res.size());
+
+        res = GroupUtils.findAnnotations(InheritedService.class.getMethod("single"));
+        Assert.assertEquals(1, res.size());
+
+        res = GroupUtils.findAnnotations(NotInheritedService.class.getMethod("noGroups"));
+        Assert.assertEquals(0, res.size());
+
+        res = GroupUtils.findAnnotations(NotInheritedService.class.getMethod("custom"));
+        Assert.assertEquals(0, res.size());
     }
 }
