@@ -1,8 +1,8 @@
 #Guice validator
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/xvik/guice-validator)
-[![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
-[![Build Status](http://img.shields.io/travis/xvik/guice-validator.svg?style=flat&branch=master)](https://travis-ci.org/xvik/guice-validator)
-[![Coverage Status](https://img.shields.io/coveralls/xvik/guice-validator.svg?style=flat)](https://coveralls.io/r/xvik/guice-validator?branch=master)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://www.opensource.org/licenses/MIT)
+[![Build Status](http://img.shields.io/travis/xvik/guice-validator.svg)](https://travis-ci.org/xvik/guice-validator)
+[![Coverage Status](https://img.shields.io/coveralls/xvik/guice-validator.svg)](https://coveralls.io/r/xvik/guice-validator?branch=master)
 
 ### About
 
@@ -16,10 +16,11 @@ Features:
 
 ### Setup
 
-Releases are published to [bintray jcenter](https://bintray.com/bintray/jcenter) (package appear immediately after release) 
-and then to maven central (require few days after release to be published). 
+Releases are published to [bintray jcenter](https://bintray.com/vyarus/xvik/guice-validator/) and 
+[maven central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator).
 
-[![Download](https://api.bintray.com/packages/vyarus/xvik/guice-validator/images/download.svg) ](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
+
+[![JCenter](https://img.shields.io/bintray/v/vyarus/xvik/guice-validator.svg?label=jcenter)](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
 [![Maven Central](https://img.shields.io/maven-central/v/ru.vyarus/guice-validator.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator)
 
 Maven:
