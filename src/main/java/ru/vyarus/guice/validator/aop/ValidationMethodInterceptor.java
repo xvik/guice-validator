@@ -2,7 +2,7 @@ package ru.vyarus.guice.validator.aop;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import ru.vyarus.guice.validator.ValidationGroups;
+import ru.vyarus.guice.validator.group.ValidationContext;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,10 +18,12 @@ import java.util.Set;
 
 /**
  * Method interceptor (actual method validation implementation).
- * <p>
+ * <p/>
  * Based on {@code org.hibernate.validator.internal.cdi.interceptor.ValidationInterceptor}
  * from hibernate-validator-cdi-5.1.1.Final module.
- * </p>
+ * <p/>
+ * Note: validation groups are declared with {@link ru.vyarus.guice.validator.group.annotation.ValidationGroups}
+ * annotation and handled by different interceptor.
  *
  * @author hibernate-validator team
  * @since 24.06.2014
@@ -31,33 +33,28 @@ public class ValidationMethodInterceptor implements MethodInterceptor {
 
     @Inject
     private ExecutableValidator validator;
+    @Inject
+    private ValidationContext context;
 
     @Override
-    public Object invoke(final MethodInvocation ctx) throws Throwable {
-
-        Class[] groups = new Class[0];
-        if (ctx.getMethod().isAnnotationPresent(ValidationGroups.class)) {
-            groups = ctx.getMethod().getAnnotation(ValidationGroups.class).value();
-        }
+    public Object invoke(final MethodInvocation invocation) throws Throwable {
+        final Class<?>[] groups = context.getContextGroups();
 
         Set<ConstraintViolation<Object>> violations = validator.validateParameters(
-                ctx.getThis(), ctx.getMethod(), ctx.getArguments(), groups
+                invocation.getThis(), invocation.getMethod(), invocation.getArguments(), groups
         );
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(
-                    getMessage(ctx.getMethod(), ctx.getArguments(), violations), violations);
+                    getMessage(invocation.getMethod(), invocation.getArguments(), violations), violations);
         }
 
-        final Object result = ctx.proceed();
-
-        violations = validator.validateReturnValue(
-                ctx.getThis(), ctx.getMethod(), result, groups
-        );
+        final Object result = invocation.proceed();
+        violations = validator.validateReturnValue(invocation.getThis(), invocation.getMethod(), result, groups);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(
-                    getMessage(ctx.getMethod(), ctx.getArguments(), violations), violations);
+                    getMessage(invocation.getMethod(), invocation.getArguments(), violations), violations);
         }
 
         return result;

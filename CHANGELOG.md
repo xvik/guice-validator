@@ -1,3 +1,5 @@
+* Add validation groups support: groups declared with annotation and used like transactions (defining groups scope)
+
 ### 1.1.0 (2014-12-20)
 * Update guice 3.0 -> 4.0-beta5
 * Add binding for ValidatorFactory instance
