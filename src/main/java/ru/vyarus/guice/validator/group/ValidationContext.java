@@ -54,15 +54,13 @@ public class ValidationContext {
      */
     public <T> T doWithGroups(final GroupAction<T> action, final Class<?>... groups) {
         pushContext(groups);
-        T res = null;
         try {
-            res = action.call();
+            return action.call();
         } catch (Throwable ex) {
-            Throwables.propagate(ex);
+            throw Throwables.propagate(ex);
         } finally {
             popContext();
         }
-        return res;
     }
 
     @SuppressWarnings("PMD.UseVarargs")
