@@ -34,7 +34,7 @@ Maven:
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-validator</artifactId>
-  <version>5.2.2.Final</version>
+  <version>5.2.4.Final</version>
 </dependency>
 <dependency>
   <groupId>org.glassfish.web</groupId>
@@ -47,7 +47,7 @@ Gradle:
 
 ```groovy
 compile 'ru.vyarus:guice-validator:1.1.0'
-compile 'org.hibernate:hibernate-validator:5.2.2.Final'
+compile 'org.hibernate:hibernate-validator:5.2.4.Final'
 compile 'org.glassfish.web:javax.el:2.2.6'
 ```
 
