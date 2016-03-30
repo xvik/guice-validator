@@ -51,10 +51,9 @@ public class MethodGroupsFactory {
         if (groups == null) {
             LOCK.lock();
             try {
-                if (cache.get(method) != null) {
-                    // groups could be created while thread wait for LOCK
-                    groups = cache.get(method);
-                } else {
+                // groups could be created while thread wait for LOCK
+                groups = cache.get(method);
+                if (groups == null) {
                     groups = buildGroups(method);
                     if (isCacheEnabled()) {
                         // internal check

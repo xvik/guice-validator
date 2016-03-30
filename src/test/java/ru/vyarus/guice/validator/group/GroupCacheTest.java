@@ -46,14 +46,19 @@ public class GroupCacheTest {
     @Test
     public void testConcurrency() throws Exception {
         List<Future<?>> executed = new ArrayList<Future<?>>();
-        final Method method = SimpleAnnService.class.getMethod("single");
-        int count = 20;
+        final Method[] method = new Method[]{
+                SimpleAnnService.class.getMethod("single"),
+                SimpleAnnService.class.getMethod("multiple"),
+                SimpleAnnService.class.getMethod("nothing"),
+                SimpleAnnService.class.getMethod("custom")
+        };
+        int count = 30;
         for (int i = 0; i < count; i++) {
             executed.add(
                     executor.submit(new Runnable() {
                         @Override
                         public void run() {
-                            factory.create(method);
+                            factory.create(method[(int)(method.length*Math.random())]);
                         }
                     })
             );

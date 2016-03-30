@@ -28,6 +28,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.hibernate:hibernate-validator:5.2.4.Final'
     testCompile 'org.glassfish.web:javax.el:2.2.6'
+    testCompile 'com.pushtorefresh.java-private-constructor-checker:checker:1.2.0'
 }
 
 group = 'ru.vyarus'
