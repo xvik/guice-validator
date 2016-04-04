@@ -1,3 +1,4 @@
+### 1.2.0 (2016-04-05)
 * Add validation groups support: groups declared with annotation and used like transactions (defining groups scope)
 
 ### 1.1.0 (2014-12-20)
