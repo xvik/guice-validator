@@ -18,10 +18,10 @@ import java.util.Set;
 
 /**
  * Method interceptor (actual method validation implementation).
- * <p/>
+ * <p>
  * Based on {@code org.hibernate.validator.internal.cdi.interceptor.ValidationInterceptor}
  * from hibernate-validator-cdi-5.1.1.Final module.
- * <p/>
+ * <p>
  * Note: validation groups are declared with {@link ru.vyarus.guice.validator.group.annotation.ValidationGroups}
  * annotation and handled by different interceptor.
  *

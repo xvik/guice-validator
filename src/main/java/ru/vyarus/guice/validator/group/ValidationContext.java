@@ -10,14 +10,14 @@ import java.util.*;
  * Defines validation groups used by method validation.
  * Actual groups are defined with {@link ru.vyarus.guice.validator.group.annotation.ValidationGroups}
  * annotation.
- * <p/>
+ * <p>
  * Context is thread bound.
- * <p/>
+ * <p>
  * Inline contexts inherit all groups from upper levels.
- * <p/>
+ * <p>
  * Default group is implicitly appended if allowed by module configuration (default true): see
  * {@link ru.vyarus.guice.validator.AbstractValidationModule#alwaysAddDefaultGroup(boolean)}
- * <p/>
+ * <p>
  * Groups may be defined directly (without annotations usage) by using
  * {@link ValidationContext#doWithGroups(ru.vyarus.guice.validator.group.GroupAction, java.lang.Class[])}.
  *

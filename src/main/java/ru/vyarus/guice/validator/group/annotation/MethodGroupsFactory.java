@@ -13,13 +13,13 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Builds method validation groups context, by resolving {@link ValidationGroups} annotations.
  * Resolved contexts are cached for future re-use.
- * <p/>
+ * <p>
  * Cache can be disabled using environment variable or system property
  * {@code System.setProperty(MethodGroupsFactory.CACHE_PROPERTY, 'false')} (or use
  * {@code MethodGroupsFactory#disableCache()}).
  * Property value checked on cache write. To clear current cache state use instance method:
  * {@link #clearCache()}.
- * <p/>
+ * <p>
  * Default group is implicitly appended if allowed by module configuration (default true): see
  * {@link ru.vyarus.guice.validator.AbstractValidationModule#alwaysAddDefaultGroup(boolean)}.
  *

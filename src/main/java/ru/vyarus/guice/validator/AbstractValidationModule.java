@@ -50,7 +50,7 @@ public abstract class AbstractValidationModule extends AbstractModule {
      * When set to false only groups from annotation will be used (in this case all validation annotation without
      * explicit group definition (assumed with default group) will not be checked if default group wasn't defined
      * explicitly.
-     * <p/>
+     * <p>
      * True by default (default group always added)
      *
      * @param addDefaultGroup true to enable implicit use of default group, false to use only defined groups
