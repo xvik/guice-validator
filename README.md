@@ -146,6 +146,63 @@ public SimpleBean validReturn(SimpleBean bean)
 * [Composed validation annotation (aggregating few annotations into single one)](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/compositeannotation)
 * [Scripted check (hibernate-validator feature)](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/script)
 
+### Custom validator
+
+Guice injections could be used when writing custom validators
+
+```java
+public class ComplexBeanValidator implements ConstraintValidator<ComplexBeanValid, ComplexBean> {
+
+    @Inject
+    private CustomService customService;
+
+    @Override
+    public void initialize(ComplexBeanValid constraintAnnotation) {
+        /* if annotation contains addition parameter it must be parsed here.. skipping for simplicity.
+          NOTE: in such simple case we can make validator singleton, because of no internal state */
+    }
+
+    @Override
+    public boolean isValid(ComplexBean value, ConstraintValidatorContext context) {
+        /* common convention is to treat null values as valid and explicitly check them with @NotNull */
+        return value == null || customService.getRequiredValue().equals(value.getUser());
+    }
+}
+
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = {ComplexBeanValidator.class})
+@Documented
+public @interface ComplexBeanValid {
+    /* ideally there should be just localization key, but for simplicity just message */
+    String message() default "Bean is not valid";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+```
+
+[Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/customtype)
+
+### Bound objects
+
+Both modules bind extra objects to context (available for injection) :
+
+* `javax.validation.Validator`
+* `javax.validation.executable.ExecutableValidator`
+* `javax.validation.ValidatorFactory`
+* `ru.vyarus.guice.validator.group.ValidationContext`
+
+### Limitations
+
+Guice aop is applied only for objects constructed by guice, so validation will not work for types
+bound by instance:
+
+```java
+bind(MyType.class).toInstance(new MyType());
+```
+
 ### Validation context
 
 [Validation groups](http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-groups.html) 
@@ -163,13 +220,13 @@ public class MyModel {
 }   
 ```
 
-Note that Groups1 and Group2 are any classes or interfaces (it doesn't matter, because they simply define group by type).
+Note that Group1 and Group2 could be any classes or interfaces (it doesn't matter, because they simply define group by type).
 
 If we use model in method like this:
 
 ```java
 public class MyService {
-    public void do(@Valid MyModel mode); {...}
+    public void do(@Valid MyModel model) {...}
 }
 ```
 
@@ -186,9 +243,9 @@ For example,
 public void do(@Valid MyModel mode); {...}
 ```
 
-This enables `Group1` so `defField` and `group1Field` will be validated (default group included by default, but can be disable (read below)).
+This enables `Group1` so `defField` and `group1Field` will be validated (default group included by default, but can be disabled (read below)).
 
-The same way annotation could define both groups: 
+Annotation could define more then one group: 
 
 ```java
 @ValidationGroups({Group1.class, Group2.class})
@@ -199,7 +256,7 @@ Annotation may be used on class to affect all methods. Also, see advanced annota
 #### Understanding context
 
 `@ValidationGroups` annotation affects not just one method, but all methods executed by this method or any subsequent method (in the same thread!).
-We can say that annotation creates `validation context`.
+We can say that annotation creates *validation context*.
 
 Suppose we have service without context:
 
@@ -284,7 +341,7 @@ public class ManualContextDemo {
 
 Default behaviour is to always use default group. So when you define validation context with groups {Group1, Group2}, 
 actual context would be {Group1, Group2, Default}. This was done in order to provide more intuitive behavior:
-validation context extends validation scope.
+validation context extends default validation scope.
 
 If you want to prevent this behavior use `alwaysAddDefaultGroup` module option:
 
@@ -373,63 +430,6 @@ Also, you can clear cache manually (on instance):
 
 ```java
 injector.getInstance(MethodGroupsFactory.class).clearCache()
-```
-
-### Custom validator
-
-Guice injections could be used when writing custom validators
-
-```java
-public class ComplexBeanValidator implements ConstraintValidator<ComplexBeanValid, ComplexBean> {
-
-    @Inject
-    private CustomService customService;
-
-    @Override
-    public void initialize(ComplexBeanValid constraintAnnotation) {
-        /* if annotation contains addition parameter it must be parsed here.. skipping for simplicity.
-          NOTE: in such simple case we can make validator singleton, because of no internal state */
-    }
-
-    @Override
-    public boolean isValid(ComplexBean value, ConstraintValidatorContext context) {
-        /* common convention is to treat null values as valid and explicitly check them with @NotNull */
-        return value == null || customService.getRequiredValue().equals(value.getUser());
-    }
-}
-
-@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {ComplexBeanValidator.class})
-@Documented
-public @interface ComplexBeanValid {
-    /* ideally there should be just localization key, but for simplicity just message */
-    String message() default "Bean is not valid";
-
-    Class<?>[] groups() default {};
-
-    Class<? extends Payload>[] payload() default {};
-}
-```
-
-[Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/customtype)
-
-### Bound objects
-
-Both modules bind extra objects to context (available for injection) :
-
-* `javax.validation.Validator`
-* `javax.validation.executable.ExecutableValidator`
-* `javax.validation.ValidatorFactory`
-* `ru.vyarus.guice.validator.group.ValidationContext`
-
-### Limitations
-
-Guice aop is applied only for objects constructed by guice, so validation will not work for types
-bound by instance:
-
-```java
-bind(MyType.class).toInstance(new MyType());
 ```
 
 ### More
