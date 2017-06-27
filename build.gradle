@@ -22,12 +22,12 @@ repositories { jcenter(); mavenCentral(); mavenLocal() }
 dependencies {
     signature 'org.codehaus.mojo.signature:java16:1.1@signature'
 
-    compile 'com.google.inject:guice:4.0'
+    compile 'com.google.inject:guice:4.1.0'
     compile 'javax.validation:validation-api:1.1.0.Final'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.hibernate:hibernate-validator:5.2.4.Final'
-    testCompile 'org.glassfish.web:javax.el:2.2.6'
+    testCompile 'org.hibernate:hibernate-validator:5.4.1.Final'
+    testCompile 'org.glassfish:javax.el:3.0.1-b08'
     testCompile 'com.pushtorefresh.java-private-constructor-checker:checker:1.2.0'
 }
 
