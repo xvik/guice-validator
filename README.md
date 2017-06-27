@@ -35,12 +35,12 @@ Maven:
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-validator</artifactId>
-  <version>5.2.4.Final</version>
+  <version>5.4.1.Final</version>
 </dependency>
 <dependency>
-  <groupId>org.glassfish.web</groupId>
+  <groupId>org.glassfish</groupId>
   <artifactId>javax.el</artifactId>
-  <version>2.2.6</version>
+  <version>3.0.1-b08</version>
 </dependency>
 ```
 
@@ -48,8 +48,8 @@ Gradle:
 
 ```groovy
 compile 'ru.vyarus:guice-validator:1.2.0'
-compile 'org.hibernate:hibernate-validator:5.2.4.Final'
-compile 'org.glassfish.web:javax.el:2.2.6'
+compile 'org.hibernate:hibernate-validator:5.4.1.Final'
+compile 'org.glassfish:javax.el:3.0.1-b08'
 ```
 
 Library targets guice 4, but [could be used with guice 3](https://github.com/xvik/guice-validator/wiki/Guice-3)
@@ -453,5 +453,5 @@ just for compile time checks.
 
 [validator-collection](https://github.com/jirutka/validator-collection) annotations to validate collections of simple types
 
--
+---
 [![java lib generator](http://img.shields.io/badge/Powered%20by-%20Java%20lib%20generator-green.svg?style=flat-square)](https://github.com/xvik/generator-lib-java)
