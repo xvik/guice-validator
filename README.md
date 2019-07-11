@@ -1,7 +1,7 @@
 # Guice validator
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/xvik/guice-validator)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://www.opensource.org/licenses/MIT)
-[![Build Status](http://img.shields.io/travis/xvik/guice-validator.svg)](https://travis-ci.org/xvik/guice-validator)
+[![Build Status](http://img.shields.io/travis/xvik/guice-validator.svg?branch=master)](https://travis-ci.org/xvik/guice-validator)
 [![Coverage Status](https://img.shields.io/coveralls/xvik/guice-validator.svg)](https://coveralls.io/r/xvik/guice-validator?branch=master)
 
 ### About
