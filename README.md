@@ -22,6 +22,8 @@ Features:
 
 For guice 4 and java 8 (binary compatible with java 11)
 
+[Old version 1.2.0 docs](https://github.com/xvik/guice-validator/tree/1.2.0)
+
 ### Setup
 
 Releases are published to [bintray jcenter](https://bintray.com/vyarus/xvik/guice-validator/) and 
