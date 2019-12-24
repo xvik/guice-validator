@@ -3,6 +3,7 @@ package ru.vyarus.guice.validator.group;
 import com.google.common.collect.Sets;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import org.junit.Assert;
 import org.junit.Test;
 import ru.vyarus.guice.validator.ImplicitValidationModule;
@@ -23,7 +24,7 @@ public class NoDefaultGroupTest {
 
     @Test
     public void testDefaultGroupDisable() throws Exception {
-        final Injector injector = Guice.createInjector(new ImplicitValidationModule()
+        final Injector injector = Guice.createInjector((Module) new ImplicitValidationModule()
                 .alwaysAddDefaultGroup(false));
         final Service service = injector.getInstance(Service.class);
 

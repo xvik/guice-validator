@@ -57,7 +57,8 @@ public class ValidationContext {
         try {
             return action.call();
         } catch (Throwable ex) {
-            throw Throwables.propagate(ex);
+            Throwables.throwIfUnchecked(ex);
+            throw new IllegalStateException(ex);
         } finally {
             popContext();
         }
@@ -78,7 +79,7 @@ public class ValidationContext {
             allgroups.remove(Default.class);
         }
         Collections.addAll(allgroups, groups);
-        context.add(allgroups.toArray(new Class<?>[allgroups.size()]));
+        context.add(allgroups.toArray(new Class<?>[0]));
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

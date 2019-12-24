@@ -37,7 +37,7 @@ public class MethodGroupsFactory {
     // lock will not affect performance for cached descriptors, just to make sure nothing was build two times
     private static final ReentrantLock LOCK = new ReentrantLock();
 
-    private final Map<Method, Class<?>[]> cache = new HashMap<Method, Class<?>[]>();
+    private final Map<Method, Class<?>[]> cache = new HashMap<>();
 
     private final boolean addDefaultGroup;
 
@@ -79,7 +79,7 @@ public class MethodGroupsFactory {
         if (addDefaultGroup) {
             result.add(Default.class);
         }
-        return result.toArray(new Class<?>[result.size()]);
+        return result.toArray(new Class<?>[0]);
     }
 
     /**

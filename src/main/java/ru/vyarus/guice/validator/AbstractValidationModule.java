@@ -102,5 +102,5 @@ public abstract class AbstractValidationModule extends AbstractModule {
      *
      * @param interceptor validation method interceptor
      */
-    protected abstract void configureAop(final ValidationMethodInterceptor interceptor);
+    protected abstract void configureAop(ValidationMethodInterceptor interceptor);
 }

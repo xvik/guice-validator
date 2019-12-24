@@ -8,13 +8,14 @@
     "libPackage": "ru.vyarus.guice.validator",
     "libVersion": "0.1.0",
     "libDesc": "Guice method validation through javax.validation implementation (hibernate-validator)",
-    "targetJava": "1.6",
+    "targetJava": "1.8",
     "libTags": "guice, validation, hibernate-validator",
     "bintrayUser": "vyarus",
     "bintrayRepo": "xvik",
     "bintraySignFiles": true,
     "mavenCentralSync": true,
     "enableQualityChecks": true,
-    "usedGeneratorVersion": "2.0.0"
+    "usedGeneratorVersion": "2.7.0",
+    "multiModule": false
   }
 }

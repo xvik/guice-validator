@@ -1,27 +1,24 @@
 plugins {
+    id 'com.gradle.build-scan' version '3.0'
     id 'groovy'
     id 'jacoco'
     id 'project-report'
-    id 'ru.vyarus.java-lib' version '1.0.1'
-    id 'ru.vyarus.github-info' version '1.0.0'
-    id 'ru.vyarus.animalsniffer' version '1.0.1'
-    id 'ru.vyarus.quality' version '1.3.0'
-    id 'com.github.kt3k.coveralls' version '2.6.3'
-    id 'com.jfrog.bintray' version '1.6'
-    id 'net.researchgate.release' version '2.3.5'
-    id 'com.github.ben-manes.versions' version '0.12.0'
+    id 'ru.vyarus.java-lib' version '1.1.2'
+    id 'ru.vyarus.github-info' version '1.1.0'
+    id 'ru.vyarus.quality' version '3.4.0'
+    id 'com.jfrog.bintray' version '1.8.4'
+    id 'net.researchgate.release' version '2.8.1'
+    id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.8
 
 wrapper {
-    gradleVersion = 2.12
+    gradleVersion = '5.6.4'
 }
 
 repositories { jcenter(); mavenCentral(); mavenLocal() }
 dependencies {
-    signature 'org.codehaus.mojo.signature:java16:1.1@signature'
-
     compile 'com.google.inject:guice:4.2.0'
     compile 'javax.validation:validation-api:1.1.0.Final'
 
@@ -42,16 +39,23 @@ github {
 pom {
     developers {
         developer {
-            id "xvik"
-            name "Vyacheslav Rusakov"
-            email "vyarus@gmail.com"
+            id 'xvik'
+            name 'Vyacheslav Rusakov'
+            email 'vyarus@gmail.com'
         }
     }
 }
 
+// java 11 auto module name
+jar {
+    manifest {
+        attributes 'Automatic-Module-Name': "$project.group.$project.name"
+    }
+}
+
 bintray {
-    user = project.hasProperty('bintrayUser') ? bintrayUser : 'USER'
-    key = project.hasProperty('bintrayKey') ? bintrayKey : 'KEY'
+    user = findProperty('bintrayUser')
+    key = findProperty('bintrayKey')
     publications = ['maven']
     dryRun = false
     publish = true
@@ -64,12 +68,12 @@ bintray {
         version {
             gpg {
                 sign = true
-                passphrase = project.hasProperty('gpgPassphrase') ? gpgPassphrase : ''
+                passphrase = findProperty('gpgPassphrase')
             }
             mavenCentralSync {
                 sync = true
-                user = project.hasProperty('sonatypeUser') ? sonatypeUser : 'USER'
-                password = project.hasProperty('sonatypePassword') ? sonatypePassword : 'PASSWORD'
+                user = findProperty('sonatypeUser')
+                password = findProperty('sonatypePassword')
             }
         }
     }
@@ -84,16 +88,25 @@ afterReleaseBuild {
 
 test {
     testLogging {
-        events "skipped", "failed", "standard_error"
-        exceptionFormat "full"
+        events 'skipped', 'failed'
+        exceptionFormat 'full'
     }
-    maxHeapSize = "512m"
+    maxHeapSize = '512m'
 }
 
 dependencyUpdates.revision = 'release'
 jacocoTestReport.reports.xml.enabled = true
 
+
 task showDependenciesTree(dependsOn: 'htmlDependencyReport', group: 'help', description:
-        'Generates dependencies tree report and opens it in browser') << {
-    java.awt.Desktop.getDesktop().open(file('/build/reports/project/dependencies/root.html'))
+        'Generates dependencies tree report and opens it in browser') {
+    doLast {
+        java.awt.Desktop.getDesktop().open(file('build/reports/project/dependencies/root.html'))
+    }
+}
+
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+    publishOnFailure()
 }
