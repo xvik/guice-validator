@@ -8,6 +8,7 @@ import ru.vyarus.guice.validator.aop.DeclaredMethodMatcher;
 import ru.vyarus.guice.validator.aop.ValidatedMethodMatcher;
 import ru.vyarus.guice.validator.aop.ValidationMethodInterceptor;
 import ru.vyarus.guice.validator.constraint.GuiceConstraintValidatorFactory;
+import ru.vyarus.guice.validator.group.ValidationContext;
 import ru.vyarus.guice.validator.group.aop.ValidationGroupInterceptor;
 import ru.vyarus.guice.validator.group.aop.ValidationGroupMatcher;
 
@@ -164,7 +165,9 @@ public class ValidationModule extends AbstractModule {
 
         bind(Validator.class).toInstance(validator);
         bind(ExecutableValidator.class).toInstance(validator.forExecutables());
+        // NOTE bound factory is not aware of guice! because it use default ConstraintValidatorFactory
         bind(ValidatorFactory.class).toInstance(factory);
+        bind(ValidationContext.class);
 
         bindConstant().annotatedWith(Names.named("guice.validator.addDefaultGroup")).to(addDefaultGroup);
         final ValidationGroupInterceptor groupInterceptor = new ValidationGroupInterceptor();
