@@ -57,6 +57,17 @@ compile 'org.glassfish:javax.el:3.0.1-b08'
 
 Library targets guice 4, but [could be used with guice 3](https://github.com/xvik/guice-validator/wiki/Guice-3)
 
+#### Snapshots
+
+Snapshots could be used through JitPack:
+
+* Go to [JitPack project page](https://jitpack.io/#ru.vyarus/guice-validator)
+* Select `Commits` section and click `Get it` on commit you want to use (you may need to wait while version builds if no one requested it before)
+* Follow displayed instruction: 
+    - Add jitpack repository: `maven { url 'https://jitpack.io' }`
+    - Use commit hash as version: `ru.vyarus:guice-validator:6933889d41`
+
+
 ### Install the Guice module
 
 #### Explicit module
