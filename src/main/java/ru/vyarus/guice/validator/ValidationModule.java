@@ -80,7 +80,7 @@ public class ValidationModule extends AbstractModule {
      * By default, ({@link javax.validation.groups.Default}) group is always added to groups
      * defined with {@link ru.vyarus.guice.validator.group.annotation.ValidationGroups} annotation.
      * <p>
-     * Calling this methid disabled default behavior: after calling it, {@link javax.validation.groups.Default}
+     * Calling this method disables default behavior: after calling it, {@link javax.validation.groups.Default}
      * must be explicitly declared.
      *
      * @return module instance for chained calls
