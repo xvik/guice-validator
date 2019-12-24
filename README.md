@@ -630,8 +630,8 @@ More examples could be found in tests.
 
 Also, read hibernate-validator docs:
 * [Constraints](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#section-declaring-bean-constraints)
-* [Declaration] (https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-method-constraints)
-* [Validation factory configuration] (https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-bootstrapping)
+* [Declaration](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-method-constraints)
+* [Validation factory configuration](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-bootstrapping)
 
 ### Supplement
 
