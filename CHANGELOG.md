@@ -1,3 +1,4 @@
+### 2.0.0 (2019-12-24)
 * Update to guice 4.2.2
 * (breaking) Minimum requirement is java 8
 * Update to validation api 2.0 ([changes comparing to 1.1](https://beanvalidation.org/2.0/))

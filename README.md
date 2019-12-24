@@ -10,14 +10,17 @@ Support:
 
 ### About
 
-Allows to validate service method parameters and return value using javax.validation annotations.
-Suggest to use it with [hibernate-validator](http://hibernate.org/validator/) (but can be used with other implementations).
+Validates service method parameters and return value using javax.validation 2.0 annotations.
+Used with [hibernate-validator](http://hibernate.org/validator/) (currently, the only [certified implementation](https://beanvalidation.org/2.0/)).
 
 Features:
-* Trigger validation on service method call
+
+* Service method call parameters and return value validation
 * Explicit and implicit validation modes (driven by additional annotation or directly by validation annotations)
-* Inject dependencies to custom validators
+* Guice injections work in custom validators
 * Validation groups support (as context, like transactional calls)
+
+For guice 4 and java 8 (binary compatible with java 11)
 
 ### Setup
 
@@ -33,29 +36,29 @@ Maven:
 <dependency>
   <groupId>ru.vyarus</groupId>
   <artifactId>guice-validator</artifactId>
-  <version>1.2.0</version>
+  <version>2.0.0</version>
 </dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-validator</artifactId>
-  <version>5.4.1.Final</version>
+  <version>6.1.0.Final</version>
 </dependency>
 <dependency>
   <groupId>org.glassfish</groupId>
   <artifactId>javax.el</artifactId>
-  <version>3.0.1-b08</version>
+  <version>3.0.1-b011</version>
 </dependency>
 ```
 
 Gradle:
 
 ```groovy
-compile 'ru.vyarus:guice-validator:1.2.0'
-compile 'org.hibernate:hibernate-validator:5.4.1.Final'
-compile 'org.glassfish:javax.el:3.0.1-b08'
+compile 'ru.vyarus:guice-validator:2.0.0'
+compile 'org.hibernate:hibernate-validator:6.1.0.Final'
+compile 'org.glassfish:javax.el:3.0.1-b011'
 ```
 
-Library targets guice 4, but [could be used with guice 3](https://github.com/xvik/guice-validator/wiki/Guice-3)
+NOTE: hiberante-validator 6.0.x will also work.
 
 #### Snapshots
 
@@ -68,73 +71,156 @@ Snapshots could be used through JitPack:
     - Use commit hash as version: `ru.vyarus:guice-validator:6933889d41`
 
 
-### Install the Guice module
+### Usage
 
-#### Explicit module
-
-Explicit module requires additional annotation `@ValidateOnExecution` on class or method to trigger runtime validation.
+Install module:
 
 ```java
-install(new ValidationModule());
+install(new ValidationModule())
 ```
 
-To create and use with default validation factory.
+#### Implicit                     
+
+By default, will work in "implicit mode": matching all methods with `@Valid` or `Constraint` (all validation 
+annotations are annotated with `@Constraint` and so easy to recognize) annotations.
+
+For example, 
+
+```java
+public class SomeService {
+    public SimpleBean beanRequired(@NotNull SimpleBean bean) {}
+} 
+```
+
+Will throw `ConstraintViolationException` exception if called as: 
+
+```java
+service.beanRequired(null)
+```
+
+If return value must be validated, method must contain `@Valid` or `Constraint` annotation:
+
+```java
+@NotNull
+public SimpleBean beanRequired(SimpleBean bean) {
+    return null;
+}
+```     
+
+Will throw `ConstraintViolationException` exception when called (due to returned null).
+
+#### Explicit
+
+Explicit mode may be used if you need to manually control validated methods:
+
+```java
+install(new ValidationModule().validateAnnotatedOnly())
+```
+
+This way only methods directly annotated with `@ValidateOnExecution` or methods inside annotated class
+will trigger validation.
+
+For example:
+
+```java
+@ValidateOnExecution 
+public class SampleService {
+    public void method1() {}
+    public void method2() {}
+}
+```
+
+Both methods will trigger validation. 
+
+Note that in contrast to implicit mode, existence of constraint annotations is not checked
+(simply nothing will happen on validation it not annotated, but validation will be called).
+
+And for method:
+
+```java
+public class SampleService {
+    
+    @ValidateOnExecution
+    public void method1() {}
+
+    public void method2() {}
+}
+```
+
+Now only `method1` will trigger validation.
+
+NOTE: javadoc of `@ValidateOnExecution` contradicts with such usage, but its name is ideal for such usage
+(no need to introduce more annotations).
+
+In case if you don't like default annotation, you can use your own:
+
+```java
+install(new ValidationModule().validateAnnotatedOnly(ToValidate.class))
+```
+
+NOTE Hibernate-validator provides annotation processor to perform additional checks in compile time: [see docs](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#validator-annotation-processor)
+In this case explicit mode could be used to differentiate compile time-only annotations from 
+runtime checks (only methods annotated with `@ValidateOnExecution` will be validated at runtime).
+
+#### Validation factory
+
+If you use custom validation factory then specify it directly:
 
 ```java
 install(new ValidationModule(yourValidationFactory));
 ```
 
-To use custom (pre-configured) validation factory.
+NOTE: even with custom validation factory, custom `ConstraintValidatorFactory` will be used
+in order to be able to wire injections inside custom validators.
 
-#### Implicit module
+This also means that validator obtained directly from your validator factory and 
+validator actually used in guice will be different: directly obtained validator will not be able
+to inject guice dependencies.
 
-Implicit mode is the same as explicit, but without requirement for `@ValidateOnExecution` annotation: just method or
-method parameter must be annotated with `@Valid` or any constraint annotation.
+#### Reducing scope
 
-```java
-install(new ImplicitValidationModule());
-```
+You can specify additional class and method matchers to exclude classes or methods from 
+validation triggering. This works in both implicit and explicit modes.
 
-To use custom (pre-configured) validation factory:
-
-```java
-install(new ImplicitValidationModule(yourValidationFactory));
-```
-
-In order to configure types from automatic validation use custom matcher (e.g. to exclude some classes):
+For example, introduce custom annotation to manually disable validations:
 
 ```java
-install(new ImplicitValidationModule()
-                .withMatcher(Matchers.not(Matchers.annotatedWith(SuppressValidation.class))))
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SuppressValidation {} 
 ```
+
+```java
+install(new ValidationModule()
+        .targetClasses(Matchers.not(Matchers.annotatedWith(SuppressValidation.class)))
+        .targetMethods(Matchers.not(Matchers.annotatedWith(SuppressValidation.class))));
+```
+
+Now any annotated nethod (or all methods in annotated class) will not trigger validation:
+
+```java
+public class SampleService {    
+    @SuppressValidation
+    public void method(@NotNull String arg) {}
+}
+```    
+
+### Bound objects
+
+Both modules bind extra objects to context (available for injection) :
+
+* `javax.validation.Validator`
+* `javax.validation.executable.ExecutableValidator`
+* `javax.validation.ValidatorFactory`
+* `ru.vyarus.guice.validator.group.ValidationContext`
+
+For example, `@Inject Validator validator` may be useful for manual object validations.
+
+NOTE: don't use `ValidatorFactory` directly, because it is not aware of guice and so 
+will not be able to wire guice injections into custom validators.    
+
 
 ### Examples
-
-Note: if explicit module (`ValidationModule`) used `@ValidateOnExecution` should be applied to class or method.
-
-Annotating method parameter with `@NotNull`
-
-```java
-public SimpleBean beanRequired(@NotNull SimpleBean bean) 
-```
-
-Now, if we call it like this
-
-```java
-myService.beanRequired(null);
-```
-
-`ConstraintViolationException` will be casted.
-
-The same could be done for return value:
-
-```java
-@NotNull
-public SimpleBean beanRequired(SimpleBean bean) 
-```
-
-Now exception will be thrown if method returns null.
-
 
 ##### Object state
 
@@ -154,11 +240,113 @@ public SimpleBean validReturn(SimpleBean bean)
 
 [Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/simple)
 
-##### Other samples
+##### Annotations composition
 
-* [Cross parameters check](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/crossparams)
-* [Composed validation annotation (aggregating few annotations into single one)](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/compositeannotation)
-* [Scripted check (hibernate-validator feature)](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/script)
+If you often declare multiple annotations, then it could be simplier to introduce new 
+composite validation.
+
+For example, here is composition of `@NotNull` and `@Size(min = 2, max = 14)`:  
+
+```java
+@NotNull
+@Size(min = 2, max = 14)
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = {})
+@Documented
+@ReportAsSingleViolation //optional
+public @interface ComposedCheck {
+    String message() default "Composed check failed";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+```     
+
+```java
+public String checkParam(@ComposedCheck String string) {}
+```   
+
+* [Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/compositeannotation)
+
+##### Cross parameters check
+
+If it is important to validate method parameters "together", then custom validator have to be declared:
+
+```java
+@SupportedValidationTarget(ValidationTarget.PARAMETERS)
+public class CrossParamsValidator implements ConstraintValidator<CrossParamsCheck, Object[]> {
+
+    @Override
+    public void initialize(CrossParamsCheck constraintAnnotation) {}
+
+    @Override
+    public boolean isValid(Object[] value, ConstraintValidatorContext context) {
+        Integer param1 = (Integer) value[0];
+        Object param2 = value[1];
+        return param1 != null && param1 == 1 && param2 instanceof Integer;
+    }
+}
+```  
+
+Validation annotation:
+
+```java
+@Constraint(validatedBy = CrossParamsValidator.class)
+@Target({ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.ANNOTATION_TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface CrossParamsCheck {
+    String message() default "Parameters are not valid";
+
+    Class<?>[] groups() default { };
+
+    Class<? extends Payload>[] payload() default { };
+}
+```
+
+And now, it may be used to validated method parameters:
+
+```java
+@CrossParamsCheck
+public void action(Integer param1, Object param2) {}
+```
+
+[Hibernate docs](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#example-using-cross-parameter-constraint)
+
+[Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/crossparams)
+
+##### Scripted check
+
+Bean level validation:
+
+```java
+@ScriptAssert(lang = "javascript", script = "it.start.before(it.finish)", alias = "it")
+public class ScriptedBean {
+
+    private Date start;
+    private Date finish;
+    ...
+}
+```
+
+Validation could be triggered by `@Valid`:
+
+```java
+public void method(@Valid ScriptedBean bean) {}
+```
+
+Parameter level check:
+
+```java
+@ParameterScriptAssert(lang = "javascript", script = "arg0.size() == arg1")
+public void paramsValid(List<Integer> list, int count) {}
+```
+
+[Hibernate docs](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#section-builtin-method-constraints)
+
+[Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/script)
 
 ### Custom validator
 
@@ -199,15 +387,6 @@ public @interface ComplexBeanValid {
 
 [Full example](https://github.com/xvik/guice-validator/tree/master/src/test/java/ru/vyarus/guice/validator/customtype)
 
-### Bound objects
-
-Both modules bind extra objects to context (available for injection) :
-
-* `javax.validation.Validator`
-* `javax.validation.executable.ExecutableValidator`
-* `javax.validation.ValidatorFactory`
-* `ru.vyarus.guice.validator.group.ValidationContext`
-
 ### Limitations
 
 Guice aop is applied only for objects constructed by guice, so validation will not work for types
@@ -219,7 +398,7 @@ bind(MyType.class).toInstance(new MyType());
 
 ### Validation context
 
-[Validation groups](http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-groups.html) 
+[Validation groups](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-groups) 
 could be used to apply different validations for the same object (or same method).
 
 For example, we have model class with 2 validation groups
@@ -357,11 +536,10 @@ Default behaviour is to always use default group. So when you define validation 
 actual context would be {Group1, Group2, Default}. This was done in order to provide more intuitive behavior:
 validation context extends default validation scope.
 
-If you want to prevent this behavior use `alwaysAddDefaultGroup` module option:
+If you want to prevent this behavior use `strictGroupsDeclaration` module option:
 
 ```java
-new ImplicitValidationModule()
-                .alwaysAddDefaultGroup(false)
+new ValidationModule().strictGroupsDeclaration()
 ```
 
 Explicit module has the same option. If you disable default group addition, then default validations (annotations
@@ -375,7 +553,7 @@ In some cases it makes sense to use your own annotations for context definition,
 
 Due to the fact that any class could be used for group name, we can use our new annotation class itself as group name.
 
-For example (example taken from [hibernate-validator docs](http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-groups.html#example-driver)):
+For example (example taken from [hibernate-validator docs](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-groups)):
 ```java
 public class Person {
     @NotNull
@@ -451,17 +629,9 @@ injector.getInstance(MethodGroupsFactory.class).clearCache()
 More examples could be found in tests.
 
 Also, read hibernate-validator docs:
-* [Base annotations](http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-bean-constraints.html)
-* [Writing custom annotations] (http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/validator-customconstraints.html)
-* [Validation factory configuration] (http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/chapter-bootstrapping.html)
-
-
-### Compile time validation
-
-Hibernate-validator provides annotation processor to perform additional checks in compile time: [see docs](http://docs.jboss.org/hibernate/validator/5.1/reference/en-US/html/validator-annotation-processor.html)
-
-Because of this feature `@ValidateOnExecution` annotation chosen for runtime validation (explicit module): to allow using other annotations
-just for compile time checks.
+* [Constraints](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#section-declaring-bean-constraints)
+* [Declaration] (https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-method-constraints)
+* [Validation factory configuration] (https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-bootstrapping)
 
 ### Supplement
 
