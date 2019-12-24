@@ -1,7 +1,7 @@
 package ru.vyarus.guice.validator.simple;
 
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
