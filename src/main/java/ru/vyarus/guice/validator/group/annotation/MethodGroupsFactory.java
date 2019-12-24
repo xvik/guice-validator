@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * {@link #clearCache()}.
  * <p>
  * Default group is implicitly appended if allowed by module configuration (default true): see
- * {@link ru.vyarus.guice.validator.AbstractValidationModule#alwaysAddDefaultGroup(boolean)}.
+ * {@link ru.vyarus.guice.validator.ValidationModule#strictGroupsDeclaration()}.
  *
  * @author Vyacheslav Rusakov
  * @since 09.03.2016

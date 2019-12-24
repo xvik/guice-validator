@@ -24,11 +24,11 @@ public abstract class AbstractParameterizedTest<T> {
         this.type = type;
     }
 
-//    @Parameterized.Parameters(name = "{index}: {0}")
+    //    @Parameterized.Parameters(name = "{index}: {0}")
     public static Collection<Object[]> generateData(Class<?> type) {
         return Arrays.asList(new Object[][]{
-                {EXPLICIT, Guice.createInjector(new ValidationModule()).getInstance(type)},
-                {IMPLICIT, Guice.createInjector(new ImplicitValidationModule()).getInstance(type)}
+                {EXPLICIT, Guice.createInjector(new ValidationModule().validateAnnotatedOnly()).getInstance(type)},
+                {IMPLICIT, Guice.createInjector(new ValidationModule()).getInstance(type)}
         });
     }
 

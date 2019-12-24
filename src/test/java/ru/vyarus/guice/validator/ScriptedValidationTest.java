@@ -1,11 +1,7 @@
 package ru.vyarus.guice.validator;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runners.Parameterized;
-import ru.vyarus.guice.validator.compositeannotation.ComposedCheckService;
 import ru.vyarus.guice.validator.script.ScriptedBean;
 import ru.vyarus.guice.validator.script.ScriptedService;
 

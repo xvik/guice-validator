@@ -1,6 +1,7 @@
 package ru.vyarus.guice.validator.group;
 
 import com.google.common.base.Throwables;
+import ru.vyarus.guice.validator.ValidationModule;
 
 import javax.inject.Singleton;
 import javax.validation.groups.Default;
@@ -16,7 +17,7 @@ import java.util.*;
  * Inline contexts inherit all groups from upper levels.
  * <p>
  * Default group is implicitly appended if allowed by module configuration (default true): see
- * {@link ru.vyarus.guice.validator.AbstractValidationModule#alwaysAddDefaultGroup(boolean)}
+ * {@link ValidationModule#strictGroupsDeclaration()}
  * <p>
  * Groups may be defined directly (without annotations usage) by using
  * {@link ValidationContext#doWithGroups(ru.vyarus.guice.validator.group.GroupAction, java.lang.Class[])}.

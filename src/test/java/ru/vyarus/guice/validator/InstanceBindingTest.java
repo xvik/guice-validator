@@ -32,8 +32,8 @@ public class InstanceBindingTest extends AbstractParameterizedTest<SimpleService
             }
         };
         return Arrays.asList(new Object[][]{
-                {EXPLICIT, Guice.createInjector(new ValidationModule(), module).getInstance(type)},
-                {IMPLICIT, Guice.createInjector(new ImplicitValidationModule(), module).getInstance(type)}
+                {EXPLICIT, Guice.createInjector(new ValidationModule().validateAnnotatedOnly(), module).getInstance(type)},
+                {IMPLICIT, Guice.createInjector(new ValidationModule(), module).getInstance(type)}
         });
     }
 

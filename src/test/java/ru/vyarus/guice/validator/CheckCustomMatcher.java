@@ -22,8 +22,8 @@ public class CheckCustomMatcher {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Injector injector = Guice.createInjector(new ImplicitValidationModule()
-                .withMatcher(Matchers.not(Matchers.annotatedWith(SuppressValidation.class))));
+        Injector injector = Guice.createInjector(new ValidationModule()
+                .targetClasses(Matchers.not(Matchers.annotatedWith(SuppressValidation.class))));
 
         matchedService = injector.getInstance(MatchedService.class);
         exceptionalService = injector.getInstance(ExceptionalService.class);

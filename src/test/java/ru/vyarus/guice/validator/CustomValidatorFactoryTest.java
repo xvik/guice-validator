@@ -19,14 +19,14 @@ public class CustomValidatorFactoryTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void testExplicitCustomFactory() throws Exception {
-        Guice.createInjector(new ValidationModule(Validation.buildDefaultValidatorFactory()))
+        Guice.createInjector(new ValidationModule(Validation.buildDefaultValidatorFactory()).validateAnnotatedOnly())
                 .getInstance(SimpleService.class)
                 .validReturn(new SimpleBean());
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void testImplicitCustomFactory() throws Exception {
-        Guice.createInjector(new ImplicitValidationModule(Validation.buildDefaultValidatorFactory()))
+        Guice.createInjector(new ValidationModule(Validation.buildDefaultValidatorFactory()))
                 .getInstance(SimpleService.class)
                 .validReturn(new SimpleBean());
     }
@@ -34,7 +34,7 @@ public class CustomValidatorFactoryTest {
     @Test
     public void testConstraintCleanup() throws Exception {
         final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Guice.createInjector(new ValidationModule(factory))
+        Guice.createInjector(new ValidationModule(factory).validateAnnotatedOnly())
                 .getInstance(CustomService.class)
                 .doAction(new ComplexBean("perfect", 12));
         factory.close();
