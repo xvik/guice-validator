@@ -1,5 +1,6 @@
-* Update to guice 4.2.0
+* Update to guice 4.2.2
 * (breaking) Minimum requirement is java 8
+* Update to validation api 2.0
 
 ### 1.2.0 (2016-04-05)
 * Add validation groups support: groups declared with annotation and used like transactions (defining groups scope)
