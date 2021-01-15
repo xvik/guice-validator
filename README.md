@@ -47,6 +47,11 @@ Maven:
 </dependency>
 <dependency>
   <groupId>org.glassfish</groupId>
+  <artifactId>jakarta.el</artifactId>
+  <version>4.0.1</version>
+</dependency>
+<dependency>
+  <groupId>org.glassfish</groupId>
   <artifactId>javax.el</artifactId>
   <version>3.0.1b-12</version>
 </dependency>
