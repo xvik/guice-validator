@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.vyarus.guice.validator.customann.ExplicitMethod;
 import ru.vyarus.guice.validator.customann.ToValidate;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 /**
  * @author Vyacheslav Rusakov

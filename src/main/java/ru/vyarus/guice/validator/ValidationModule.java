@@ -12,11 +12,11 @@ import ru.vyarus.guice.validator.group.ValidationContext;
 import ru.vyarus.guice.validator.group.aop.ValidationGroupInterceptor;
 import ru.vyarus.guice.validator.group.aop.ValidationGroupMatcher;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.validation.executable.ExecutableValidator;
-import javax.validation.executable.ValidateOnExecution;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.executable.ExecutableValidator;
+import jakarta.validation.executable.ValidateOnExecution;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -29,15 +29,15 @@ import java.lang.reflect.Method;
  * In both modes, target scope could be reduced using {@link #targetClasses(Matcher)} and
  * {@link #targetMethods(Matcher)}.
  * <p>
- * Binds {@link javax.validation.Validator}, {@link javax.validation.executable.ExecutableValidator} and
- * {@link javax.validation.ValidatorFactory} instances to context.
+ * Binds {@link jakarta.validation.Validator}, {@link jakarta.validation.executable.ExecutableValidator} and
+ * {@link jakarta.validation.ValidatorFactory} instances to context.
  * <p>
- * Validators are obtained from guice context (using custom {@link javax.validation.ConstraintValidatorFactory}, so
+ * Validators are obtained from guice context (using custom {@link jakarta.validation.ConstraintValidatorFactory}, so
  * it is possible to use guice injections there.
  * <p>
  * Custom validation groups could be declared for target methods using
  * {@link ru.vyarus.guice.validator.group.annotation.ValidationGroups}.
- * By default, {@link javax.validation.groups.Default} group assumed to be always selected when custom validation
+ * By default, {@link jakarta.validation.groups.Default} group assumed to be always selected when custom validation
  * groups declared with {@link ru.vyarus.guice.validator.group.annotation.ValidationGroups}. To avoid implicit
  * default groups inclusion use {@link #strictGroupsDeclaration()}.
  *
@@ -77,10 +77,10 @@ public class ValidationModule extends AbstractModule {
     }
 
     /**
-     * By default, ({@link javax.validation.groups.Default}) group is always added to groups
+     * By default, ({@link jakarta.validation.groups.Default}) group is always added to groups
      * defined with {@link ru.vyarus.guice.validator.group.annotation.ValidationGroups} annotation.
      * <p>
-     * Calling this method disables default behavior: after calling it, {@link javax.validation.groups.Default}
+     * Calling this method disables default behavior: after calling it, {@link jakarta.validation.groups.Default}
      * must be explicitly declared.
      *
      * @return module instance for chained calls

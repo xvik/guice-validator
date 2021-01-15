@@ -1,8 +1,8 @@
 package ru.vyarus.guice.validator.customtype;
 
 import javax.inject.Singleton;
-import javax.validation.Valid;
-import javax.validation.executable.ValidateOnExecution;
+import jakarta.validation.Valid;
+import jakarta.validation.executable.ValidateOnExecution;
 
 /**
  * Service, used in custom validator, wired with guice.

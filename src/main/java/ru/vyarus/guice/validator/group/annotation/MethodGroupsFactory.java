@@ -5,7 +5,7 @@ import com.google.inject.name.Named;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;

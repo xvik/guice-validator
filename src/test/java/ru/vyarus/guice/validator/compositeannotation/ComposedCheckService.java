@@ -1,7 +1,7 @@
 package ru.vyarus.guice.validator.compositeannotation;
 
 import javax.inject.Singleton;
-import javax.validation.executable.ValidateOnExecution;
+import jakarta.validation.executable.ValidateOnExecution;
 
 /**
  * Example of using composed annotation for parameter validation.(return value validation doesn't work, maybe bug.. investigation required)

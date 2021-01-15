@@ -1,6 +1,6 @@
 package ru.vyarus.guice.validator.customtype;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Bean with custom validator for entire class.

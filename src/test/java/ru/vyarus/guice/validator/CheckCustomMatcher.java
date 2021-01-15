@@ -9,7 +9,7 @@ import ru.vyarus.guice.validator.matcher.ExceptionalService;
 import ru.vyarus.guice.validator.matcher.MatchedService;
 import ru.vyarus.guice.validator.matcher.SuppressValidation;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 /**
  * @author Vyacheslav Rusakov

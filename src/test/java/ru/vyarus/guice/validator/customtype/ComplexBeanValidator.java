@@ -1,8 +1,8 @@
 package ru.vyarus.guice.validator.customtype;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * Entire bean validator with service injection.

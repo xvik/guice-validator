@@ -6,11 +6,11 @@ import ru.vyarus.guice.validator.group.ValidationContext;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ElementKind;
-import javax.validation.Path;
-import javax.validation.executable.ExecutableValidator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ElementKind;
+import jakarta.validation.Path;
+import jakarta.validation.executable.ExecutableValidator;
 import java.lang.reflect.Member;
 import java.util.Arrays;
 import java.util.Iterator;
