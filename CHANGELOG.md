@@ -1,4 +1,6 @@
 * (breaking) Switch to `jakarta.validation` (EE9, Bean validation 3, hibernate-validator 7 support) from `javax.validation`) 
+* Fix module name (to ru.vyarus.guice.validator)
+* Update to guice 4.2.3
 
 ### 2.0.0 (2019-12-24)
 * Update to guice 4.2.2
