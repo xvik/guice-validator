@@ -1,7 +1,7 @@
 package ru.vyarus.guice.validator.crossparams;
 
 import javax.inject.Singleton;
-import javax.validation.executable.ValidateOnExecution;
+import jakarta.validation.executable.ValidateOnExecution;
 
 /**
  * Service with method cross parameters validation.

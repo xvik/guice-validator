@@ -1,6 +1,6 @@
 package ru.vyarus.guice.validator.customann;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author Vyacheslav Rusakov

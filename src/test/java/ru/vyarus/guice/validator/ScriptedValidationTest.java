@@ -5,7 +5,7 @@ import org.junit.runners.Parameterized;
 import ru.vyarus.guice.validator.script.ScriptedBean;
 import ru.vyarus.guice.validator.script.ScriptedService;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;

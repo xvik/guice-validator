@@ -7,9 +7,9 @@ import ru.vyarus.guice.validator.customtype.CustomService;
 import ru.vyarus.guice.validator.simple.SimpleBean;
 import ru.vyarus.guice.validator.simple.SimpleService;
 
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidatorFactory;
 
 /**
  * @author Vyacheslav Rusakov

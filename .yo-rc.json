@@ -7,7 +7,7 @@
     "libGroup": "ru.vyarus",
     "libPackage": "ru.vyarus.guice.validator",
     "libVersion": "0.1.0",
-    "libDesc": "Guice method validation through javax.validation implementation (hibernate-validator)",
+    "libDesc": "Guice method validation through jakarta.validation implementation (hibernate-validator)",
     "targetJava": "1.8",
     "libTags": "guice, validation, hibernate-validator",
     "bintrayUser": "vyarus",

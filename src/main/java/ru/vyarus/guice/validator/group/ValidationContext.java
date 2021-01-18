@@ -4,7 +4,7 @@ import com.google.common.base.Throwables;
 import ru.vyarus.guice.validator.ValidationModule;
 
 import javax.inject.Singleton;
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
 import java.util.*;
 
 /**

@@ -10,9 +10,9 @@ import ru.vyarus.guice.validator.group.support.PropFunction;
 import ru.vyarus.guice.validator.group.support.groups.ann.Group1;
 import ru.vyarus.guice.validator.group.support.model.Model;
 
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
-import javax.validation.groups.Default;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import java.util.Set;
 
 /**

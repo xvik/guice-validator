@@ -3,7 +3,7 @@ package ru.vyarus.guice.validator.group.support.model;
 import ru.vyarus.guice.validator.group.support.groups.ann.Group1;
 import ru.vyarus.guice.validator.group.support.groups.ann.Group2;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author Vyacheslav Rusakov

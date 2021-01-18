@@ -2,7 +2,7 @@ package ru.vyarus.guice.validator.customann;
 
 import ru.vyarus.guice.validator.matcher.SuppressValidation;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author Vyacheslav Rusakov

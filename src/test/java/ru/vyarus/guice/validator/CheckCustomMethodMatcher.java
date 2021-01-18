@@ -8,7 +8,7 @@ import org.junit.Test;
 import ru.vyarus.guice.validator.matcher.ExceptionalMethod;
 import ru.vyarus.guice.validator.matcher.SuppressValidation;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 /**
  * @author Vyacheslav Rusakov

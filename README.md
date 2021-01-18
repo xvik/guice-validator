@@ -10,7 +10,7 @@ Support:
 
 ### About
 
-Validates service method parameters and return value using javax.validation 2.0 annotations.
+Validates service method parameters and return value using jakarta.validation 2.0 annotations.
 Used with [hibernate-validator](http://hibernate.org/validator/) (currently, the only [certified implementation](https://beanvalidation.org/2.0/)).
 
 Features:
@@ -43,21 +43,26 @@ Maven:
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-validator</artifactId>
-  <version>6.1.0.Final</version>
+  <version>7.0.0.Final</version>
+</dependency>
+<dependency>
+  <groupId>org.glassfish</groupId>
+  <artifactId>jakarta.el</artifactId>
+  <version>4.0.1</version>
 </dependency>
 <dependency>
   <groupId>org.glassfish</groupId>
   <artifactId>javax.el</artifactId>
-  <version>3.0.1-b011</version>
+  <version>3.0.1b-12</version>
 </dependency>
 ```
 
 Gradle:
 
 ```groovy
-compile 'ru.vyarus:guice-validator:2.0.0'
+compile 'ru.vyarus:guice-validator:4.2.3'
 compile 'org.hibernate:hibernate-validator:6.1.0.Final'
-compile 'org.glassfish:javax.el:3.0.1-b011'
+compile 'org.glassfish:javax.el:3.0.3b-12'
 ```
 
 NOTE: hiberante-validator 6.0.x will also work.
@@ -211,9 +216,9 @@ public class SampleService {
 
 Both modules bind extra objects to context (available for injection) :
 
-* `javax.validation.Validator`
-* `javax.validation.executable.ExecutableValidator`
-* `javax.validation.ValidatorFactory`
+* `jakarta.validation.Validator`
+* `jakarta.validation.executable.ExecutableValidator`
+* `jakarta.validation.ValidatorFactory`
 * `ru.vyarus.guice.validator.group.ValidationContext`
 
 For example, `@Inject Validator validator` may be useful for manual object validations.
@@ -551,11 +556,11 @@ where you didn't specify group) will not be used, unless you specify Default gro
 
 In some cases it makes sense to use your own annotations for context definition, e.g.:
 * Because they are more descriptive in code
-* You want to group multiple groups (the same way as you can group multiple validations in javax validation).
+* You want to group multiple groups (the same way as you can group multiple validations in jakarta validation).
 
 Due to the fact that any class could be used for group name, we can use our new annotation class itself as group name.
 
-For example (example taken from [hibernate-validator docs](https://docs.jboss.org/hibernate/validator/6.0/reference/en-US/html_single/#chapter-groups)):
+For example (example taken from [hibernate-validator docs](https://docs.jboss.org/hibernate/validator/7.0/reference/en-US/html_single/#chapter-groups)):
 ```java
 public class Person {
     @NotNull

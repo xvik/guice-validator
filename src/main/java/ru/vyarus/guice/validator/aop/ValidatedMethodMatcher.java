@@ -2,8 +2,8 @@ package ru.vyarus.guice.validator.aop;
 
 import com.google.inject.matcher.AbstractMatcher;
 
-import javax.validation.Constraint;
-import javax.validation.Valid;
+import jakarta.validation.Constraint;
+import jakarta.validation.Valid;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 

@@ -11,10 +11,10 @@ import ru.vyarus.guice.validator.group.support.groups.ann.Group2;
 import ru.vyarus.guice.validator.group.support.model.Model;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
-import javax.validation.executable.ValidateOnExecution;
-import javax.validation.groups.Default;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import jakarta.validation.executable.ValidateOnExecution;
+import jakarta.validation.groups.Default;
 import java.util.Collection;
 import java.util.Set;
 

@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.junit.runners.Parameterized;
 
 import javax.inject.Singleton;
-import javax.validation.ConstraintViolationException;
-import javax.validation.constraints.NotNull;
-import javax.validation.executable.ValidateOnExecution;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.executable.ValidateOnExecution;
 import java.util.Collection;
 
 /**

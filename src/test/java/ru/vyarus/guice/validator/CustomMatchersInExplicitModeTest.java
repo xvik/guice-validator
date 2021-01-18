@@ -10,7 +10,7 @@ import ru.vyarus.guice.validator.customann.SuppressedExplicitMethod;
 import ru.vyarus.guice.validator.customann.ToValidate;
 import ru.vyarus.guice.validator.matcher.SuppressValidation;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 /**
  * @author Vyacheslav Rusakov

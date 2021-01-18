@@ -1,9 +1,9 @@
 package ru.vyarus.guice.validator.simple;
 
 import javax.inject.Singleton;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.executable.ValidateOnExecution;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.executable.ValidateOnExecution;
 
 /**
  * Very basic method validations.
