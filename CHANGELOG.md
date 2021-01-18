@@ -1,3 +1,5 @@
+* (breaking) Switch to `jakarta.validation` (EE9, Bean validation 3, hibernate-validator 7 support) from `javax.validation`) 
+
 ### 2.0.0 (2019-12-24)
 * Update to guice 4.2.2
 * (breaking) Minimum requirement is java 8

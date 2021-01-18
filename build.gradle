@@ -25,7 +25,6 @@ dependencies {
     testCompile 'junit:junit:4.13.1'
     testCompile 'org.hibernate:hibernate-validator:7.0.0.Final'
     testCompile 'org.glassfish:jakarta.el:4.0.1'
-    testCompile 'org.glassfish:javax.el:3.0.1-b12'
     testCompile 'com.pushtorefresh.java-private-constructor-checker:checker:1.2.0'
 }
 

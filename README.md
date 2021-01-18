@@ -6,11 +6,11 @@
 
 Support:
 
-* [gitter chat](https://gitter.im/xvik/guice-validator) 
+* [gitter chat](https://gitter.im/xvik/guice-validator)
 
 ### About
 
-Validates service method parameters and return value using jakarta.validation 2.0 annotations.
+Validates service method parameters and return value using jakarta.validation 3.0 (the difference with 2.0 is only in api package) annotations.
 Used with [hibernate-validator](http://hibernate.org/validator/) (currently, the only [certified implementation](https://beanvalidation.org/2.0/)).
 
 Features:
@@ -23,6 +23,32 @@ Features:
 For guice 4 and java 8 (binary compatible with java 11)
 
 [Old version 1.2.0 docs](https://github.com/xvik/guice-validator/tree/1.2.0)
+
+### Important!
+
+Since Java EE 9 `javax.validation` was renamed to `jakarta.validation` and *Bean Validation* become 3.0.
+[Hibernate-validator 7.0 targets new package](https://in.relation.to/2021/01/06/hibernate-validator-700-62-final-released/).
+
+Current guice-validator (3.x) targets hibernate 7 (and `jakarta.validation`), but if you still
+use hibernate-validator 6 (and `javax.validation`) then use previous version: 
+
+Version | Target
+----|----
+guice validator 3.x | Hibernate-validator 7, for `jakarta.validation`
+[guice-validator 2.x](https://github.com/xvik/guice-validator/tree/2.0.0) | Hibernate-validator 6.x, for `javax.validation` 
+
+### Migration
+
+If you migrating from hibernate-validator 6.x then change dependencies:
+
+Before |  After
+---- | ------
+ru.vyarus:guice-validator:2.0.0 | ru.vyarus:guice-validator:3.0.0
+javax.validation:validation-api:2.0.1.Final | jakarta.validation:jakarta.validation-api:3.0.0
+org.hibernate:hibernate-validator:6.2.0.Final|  org.hibernate:hibernate-validator:7.0.0.Final
+org.glassfish:javax.el:3.0.1-b12 |  org.glassfish:jakarta.el:4.0.1
+
+And rename `javax.validation` package to `jakarta.validation` everywhere. Everything else is the same.
 
 ### Setup
 
@@ -38,7 +64,7 @@ Maven:
 <dependency>
   <groupId>ru.vyarus</groupId>
   <artifactId>guice-validator</artifactId>
-  <version>2.0.0</version>
+  <version>3.0.0</version>
 </dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
@@ -50,22 +76,15 @@ Maven:
   <artifactId>jakarta.el</artifactId>
   <version>4.0.1</version>
 </dependency>
-<dependency>
-  <groupId>org.glassfish</groupId>
-  <artifactId>javax.el</artifactId>
-  <version>3.0.1b-12</version>
-</dependency>
 ```
 
 Gradle:
 
 ```groovy
-compile 'ru.vyarus:guice-validator:4.2.3'
-compile 'org.hibernate:hibernate-validator:6.1.0.Final'
-compile 'org.glassfish:javax.el:3.0.3b-12'
+implementation 'ru.vyarus:guice-validator:3.0.0'
+implementation 'org.hibernate:hibernate-validator:7.0.0.Final'
+implementation 'org.glassfish:jakarta.el:4.0.1'
 ```
-
-NOTE: hiberante-validator 6.0.x will also work.
 
 #### Snapshots
 
