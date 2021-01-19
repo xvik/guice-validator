@@ -29,7 +29,7 @@ import java.util.*;
 public class ValidationContext {
 
     private static final Class<?>[] EMPTY = new Class<?>[0];
-    private final ThreadLocal<List<Class<?>[]>> threadContext = new ThreadLocal<List<Class<?>[]>>();
+    private final ThreadLocal<List<Class<?>[]>> threadContext = new ThreadLocal<>();
 
     /**
      * @return current context validation groups or empty array when no groups defined
@@ -69,11 +69,11 @@ public class ValidationContext {
     private void pushContext(final Class<?>[] groups) {
         List<Class<?>[]> context = threadContext.get();
         if (context == null) {
-            context = new ArrayList<Class<?>[]>();
+            context = new ArrayList<>();
             threadContext.set(context);
         }
         // remove duplicates
-        final Set<Class<?>> allgroups = new LinkedHashSet<Class<?>>();
+        final Set<Class<?>> allgroups = new LinkedHashSet<>();
         if (!context.isEmpty()) {
             Collections.addAll(allgroups, context.get(context.size() - 1));
             // default group will always be last (here it comes from upper context and must be removed)
