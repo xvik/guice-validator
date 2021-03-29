@@ -16,7 +16,7 @@ wrapper {
     gradleVersion = '6.8'
 }
 
-repositories { jcenter(); mavenCentral(); mavenLocal() }
+repositories { mavenCentral(); mavenLocal() }
 dependencies {
     implementation 'com.google.inject:guice:5.0.1'
     implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
