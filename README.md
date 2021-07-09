@@ -1,6 +1,6 @@
 # Guice validator
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://www.opensource.org/licenses/MIT)
-[![Build Status](http://img.shields.io/travis/xvik/guice-validator.svg?branch=master)](https://travis-ci.org/xvik/guice-validator)
+[![Build Status](https://travis-ci.com/xvik/guice-validator.svg?branch=master)](https://travis-ci.com/xvik/guice-validator)
 [![Appveyor build status](https://ci.appveyor.com/api/projects/status/github/xvik/guice-validator?svg=true&branch=master)](https://ci.appveyor.com/project/xvik/guice-validator)
 [![codecov](https://codecov.io/gh/xvik/guice-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/xvik/guice-validator)
 
@@ -52,10 +52,6 @@ And rename `javax.validation` package to `jakarta.validation` everywhere. Everyt
 
 ### Setup
 
-Releases are published to [bintray jcenter](https://bintray.com/vyarus/xvik/guice-validator/) and 
-[maven central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator).
-
-[![JCenter](https://img.shields.io/bintray/v/vyarus/xvik/guice-validator.svg?label=jcenter)](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
 [![Maven Central](https://img.shields.io/maven-central/v/ru.vyarus/guice-validator.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator)
 
 Maven:
