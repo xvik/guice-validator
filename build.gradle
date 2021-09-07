@@ -14,7 +14,7 @@ plugins {
 sourceCompatibility = 1.8
 
 wrapper {
-    gradleVersion = '6.9'
+    gradleVersion = '7.2'
 }
 
 repositories { mavenLocal(); mavenCentral() }
