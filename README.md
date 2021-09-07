@@ -1,12 +1,10 @@
 # Guice validator
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://www.opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.com/xvik/guice-validator.svg?branch=master)](https://travis-ci.com/xvik/guice-validator)
+[![CI](https://github.com/xvik/guice-validator/actions/workflows/CI.yml/badge.svg)](https://github.com/xvik/guice-validator/actions/workflows/CI.yml)
 [![Appveyor build status](https://ci.appveyor.com/api/projects/status/github/xvik/guice-validator?svg=true&branch=master)](https://ci.appveyor.com/project/xvik/guice-validator)
 [![codecov](https://codecov.io/gh/xvik/guice-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/xvik/guice-validator)
 
-Support:
-
-* [gitter chat](https://gitter.im/xvik/guice-validator)
+Support: [gitter chat](https://gitter.im/xvik/guice-validator)
 
 ### About
 
