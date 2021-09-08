@@ -1,3 +1,5 @@
+* Fix Default group manual usage ignored in strict groups mode
+
 ### 2.0.0 (2019-12-24)
 * Update to guice 4.2.2
 * (breaking) Minimum requirement is java 8

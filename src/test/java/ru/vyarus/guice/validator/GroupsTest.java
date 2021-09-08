@@ -42,6 +42,7 @@ public class GroupsTest extends AbstractParameterizedTest<GroupsTest.Service> {
         try {
             // default group
             service.noContext(new Model(null, null, null));
+            Assert.fail();
         } catch (ConstraintViolationException ex) {
             Set<String> props = PropFunction.convert(ex.getConstraintViolations());
             Assert.assertEquals(1, props.size());
@@ -57,6 +58,7 @@ public class GroupsTest extends AbstractParameterizedTest<GroupsTest.Service> {
 
         try {
             service.context1(new Model(null, null, "sample"));
+            Assert.fail();
         } catch (ConstraintViolationException ex) {
             Set<String> props = PropFunction.convert(ex.getConstraintViolations());
             Assert.assertEquals(1, props.size());
@@ -66,6 +68,7 @@ public class GroupsTest extends AbstractParameterizedTest<GroupsTest.Service> {
         // default group is implicitly activated by default
         try {
             service.context1(new Model(null, null, null));
+            Assert.fail();
         } catch (ConstraintViolationException ex) {
             Set<String> props = PropFunction.convert(ex.getConstraintViolations());
             Assert.assertEquals(2, props.size());
@@ -82,6 +85,7 @@ public class GroupsTest extends AbstractParameterizedTest<GroupsTest.Service> {
 
         try {
             service.multipleContexts(new Model(null, null, null));
+            Assert.fail();
         } catch (ConstraintViolationException ex) {
             Set<String> props = PropFunction.convert(ex.getConstraintViolations());
             Assert.assertEquals(3, props.size());
@@ -96,6 +100,7 @@ public class GroupsTest extends AbstractParameterizedTest<GroupsTest.Service> {
 
         try {
             service.contextTree(new Model(null, "sample", "sample"));
+            Assert.fail();
         } catch (ConstraintViolationException ex) {
             Set<String> props = PropFunction.convert(ex.getConstraintViolations());
             Assert.assertEquals(1, props.size());
