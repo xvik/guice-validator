@@ -36,6 +36,7 @@ public class NoDefaultGroupTest {
             public Object call() throws Throwable {
                 try {
                     service.call(new Model("sample", null, null));
+                    Assert.fail();
                 } catch (ConstraintViolationException ex) {
                     Set<String> props = PropFunction.convert(ex.getConstraintViolations());
                     Assert.assertEquals(1, props.size());

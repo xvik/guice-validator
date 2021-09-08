@@ -1,8 +1,10 @@
 package ru.vyarus.guice.validator.group;
 
 import com.google.common.base.Throwables;
+import com.google.inject.name.Named;
 import ru.vyarus.guice.validator.ValidationModule;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import jakarta.validation.groups.Default;
 import java.util.*;
@@ -30,6 +32,13 @@ public class ValidationContext {
 
     private static final Class<?>[] EMPTY = new Class<?>[0];
     private final ThreadLocal<List<Class<?>[]>> threadContext = new ThreadLocal<>();
+
+    private final boolean addDefaultGroup;
+
+    @Inject
+    public ValidationContext(@Named("guice.validator.addDefaultGroup") final boolean addDefaultGroup) {
+        this.addDefaultGroup = addDefaultGroup;
+    }
 
     /**
      * @return current context validation groups or empty array when no groups defined
@@ -76,8 +85,11 @@ public class ValidationContext {
         final Set<Class<?>> allgroups = new LinkedHashSet<>();
         if (!context.isEmpty()) {
             Collections.addAll(allgroups, context.get(context.size() - 1));
-            // default group will always be last (here it comes from upper context and must be removed)
-            allgroups.remove(Default.class);
+            // should not be applied otherwise because default group could be added manually
+            if (addDefaultGroup) {
+                // default group will always be last (here it comes from upper context and must be removed)
+                allgroups.remove(Default.class);
+            }
         }
         Collections.addAll(allgroups, groups);
         context.add(allgroups.toArray(new Class<?>[0]));

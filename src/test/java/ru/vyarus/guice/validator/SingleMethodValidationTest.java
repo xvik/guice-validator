@@ -36,7 +36,7 @@ public class SingleMethodValidationTest extends AbstractParameterizedTest<Single
         } else {
             try {
                 service.noValidation(null);
-                Assert.assertTrue(false);
+                Assert.fail();
             } catch (ConstraintViolationException ex) {
             }
         }
