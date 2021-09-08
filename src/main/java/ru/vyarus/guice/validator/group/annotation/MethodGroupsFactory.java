@@ -72,7 +72,7 @@ public class MethodGroupsFactory {
     private Class<?>[] buildGroups(final Method method) {
         final List<ValidationGroups> annotations = GroupUtils.findAnnotations(method);
         // remove duplicates
-        final Set<Class<?>> result = new LinkedHashSet<Class<?>>();
+        final Set<Class<?>> result = new LinkedHashSet<>();
         for (ValidationGroups group : annotations) {
             Collections.addAll(result, group.value());
         }

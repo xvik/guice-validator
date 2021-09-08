@@ -1,8 +1,8 @@
 # Guice validator
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://www.opensource.org/licenses/MIT)
-[![Build Status](http://img.shields.io/travis/xvik/guice-validator.svg?branch=master)](https://travis-ci.org/xvik/guice-validator)
-[![Appveyor build status](https://ci.appveyor.com/api/projects/status/github/xvik/guice-validator?svg=true&branch=master)](https://ci.appveyor.com/project/xvik/guice-validator)
-[![codecov](https://codecov.io/gh/xvik/guice-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/xvik/guice-validator)
+[![CI](https://github.com/xvik/guice-validator/actions/workflows/CI.yml/badge.svg?branch=2.x)](https://github.com/xvik/guice-validator/actions/workflows/CI.yml)
+[![Appveyor build status](https://ci.appveyor.com/api/projects/status/github/xvik/guice-validator?svg=true&branch=2.x)](https://ci.appveyor.com/project/xvik/guice-validator)
+[![codecov](https://codecov.io/gh/xvik/guice-validator/branch/2.x/graph/badge.svg)](https://codecov.io/gh/xvik/guice-validator)
 
 Support:
 
@@ -26,10 +26,6 @@ For guice 4 and java 8 (binary compatible with java 11)
 
 ### Setup
 
-Releases are published to [bintray jcenter](https://bintray.com/vyarus/xvik/guice-validator/) and 
-[maven central](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator).
-
-[![JCenter](https://img.shields.io/bintray/v/vyarus/xvik/guice-validator.svg?label=jcenter)](https://bintray.com/vyarus/xvik/guice-validator/_latestVersion)
 [![Maven Central](https://img.shields.io/maven-central/v/ru.vyarus/guice-validator.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/ru.vyarus/guice-validator)
 
 Maven:
@@ -55,9 +51,9 @@ Maven:
 Gradle:
 
 ```groovy
-compile 'ru.vyarus:guice-validator:2.0.0'
-compile 'org.hibernate:hibernate-validator:6.1.0.Final'
-compile 'org.glassfish:javax.el:3.0.1-b011'
+implementation 'ru.vyarus:guice-validator:2.0.0'
+implementation 'org.hibernate:hibernate-validator:6.1.0.Final'
+implementation 'org.glassfish:javax.el:3.0.1-b011'
 ```
 
 NOTE: hiberante-validator 6.0.x will also work.

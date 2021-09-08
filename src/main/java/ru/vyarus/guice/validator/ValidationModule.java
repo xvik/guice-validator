@@ -210,7 +210,7 @@ public class ValidationModule extends AbstractModule {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.CompareObjectsWithEquals"})
     protected Matcher<? super Class<?>> getClassMatcher(final Class<? extends Annotation> annotation) {
         final Matcher<AnnotatedElement> res = Matchers.annotatedWith(annotation);
         return classMatcher == Matchers.any()
@@ -226,6 +226,7 @@ public class ValidationModule extends AbstractModule {
                 ? res : res.and((Matcher<? super AnnotatedElement>) methodMatcher);
     }
 
+    @SuppressWarnings("PMD.CompareObjectsWithEquals")
     protected Matcher<? super Method> getValidatedMethodMatcher() {
         final Matcher<Method> res = new ValidatedMethodMatcher();
         // combine custom filter with annotation

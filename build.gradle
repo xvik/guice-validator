@@ -1,31 +1,36 @@
 plugins {
-    id 'com.gradle.build-scan' version '3.0'
     id 'groovy'
     id 'jacoco'
     id 'project-report'
-    id 'ru.vyarus.java-lib' version '1.1.2'
-    id 'ru.vyarus.github-info' version '1.1.0'
-    id 'ru.vyarus.quality' version '4.0.0'
-    id 'com.jfrog.bintray' version '1.8.4'
+    id 'signing'
+    id 'ru.vyarus.java-lib' version '2.2.1'
+    id 'ru.vyarus.github-info' version '1.3.0'
+    id 'ru.vyarus.quality' version '4.6.0'
     id 'net.researchgate.release' version '2.8.1'
-    id 'com.github.ben-manes.versions' version '0.27.0'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
+    id 'com.github.ben-manes.versions' version '0.39.0'
 }
 
 sourceCompatibility = 1.8
 
 wrapper {
-    gradleVersion = '5.6.4'
+    gradleVersion = '7.2'
 }
 
-repositories { jcenter(); mavenCentral(); mavenLocal() }
+repositories { mavenLocal(); mavenCentral() }
 dependencies {
-    compile 'com.google.inject:guice:4.2.2'
-    compile 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'com.google.inject:guice:5.0.1'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.hibernate:hibernate-validator:6.1.0.Final'
-    testCompile 'org.glassfish:javax.el:3.0.1-b11'
-    testCompile 'com.pushtorefresh.java-private-constructor-checker:checker:1.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hibernate:hibernate-validator:6.2.0.Final'
+    testImplementation 'org.glassfish:javax.el:3.0.1-b12'
+    testImplementation 'com.pushtorefresh.java-private-constructor-checker:checker:1.2.0'
+
+    // was removed in jdk 15
+    if(JavaVersion.current() >= JavaVersion.VERSION_15) {
+        implementation 'org.openjdk.nashorn:nashorn-core:15.3'
+    }
 }
 
 group = 'ru.vyarus'
@@ -46,47 +51,37 @@ pom {
     }
 }
 
-// java 11 auto module name
-jar {
-    manifest {
-        attributes 'Automatic-Module-Name': "$project.group.$project.name"
-    }
+javaLib {
+    // java 9 auto module name
+    autoModuleName = "ru.vyarus.guice.validator"
+    // don't publish gradle metadata artifact
+    withoutGradleMetadata()
 }
 
-bintray {
-    user = findProperty('bintrayUser')
-    key = findProperty('bintrayKey')
-    publications = ['maven']
-    dryRun = false
-    publish = true
-    pkg {
-        repo = 'xvik'
-        name = project.name
-        desc = project.description
-        labels = ['guice', 'validation', 'hibernate-validator']
-        publicDownloadNumbers = true
-        version {
-            gpg {
-                sign = true
-                passphrase = findProperty('gpgPassphrase')
-            }
-            mavenCentralSync {
-                sync = true
-                user = findProperty('sonatypeUser')
-                password = findProperty('sonatypePassword')
-            }
+release.git.requireBranch = '2.x'
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            username = findProperty('sonatypeUser')
+            password = findProperty('sonatypePassword')
         }
     }
 }
 
+// Required signing properties for release: signing.keyId, signing.password and signing.secretKeyRingFile
+// (https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials)
+
 afterReleaseBuild {
-    dependsOn = [bintrayUpload]
+    dependsOn = ['publishToSonatype',
+                 'closeAndReleaseSonatypeStagingRepository']
     doLast {
         logger.warn "RELEASED $project.group:$project.name:$project.version"
     }
 }
 
 test {
+    //useJUnitPlatform()
     testLogging {
         events 'skipped', 'failed'
         exceptionFormat 'full'
@@ -95,18 +90,3 @@ test {
 }
 
 dependencyUpdates.revision = 'release'
-jacocoTestReport.reports.xml.enabled = true
-
-
-task showDependenciesTree(dependsOn: 'htmlDependencyReport', group: 'help', description:
-        'Generates dependencies tree report and opens it in browser') {
-    doLast {
-        java.awt.Desktop.getDesktop().open(file('build/reports/project/dependencies/root.html'))
-    }
-}
-
-buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
-    publishOnFailure()
-}
