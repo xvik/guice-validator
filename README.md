@@ -18,7 +18,7 @@ Features:
 * Guice injections work in custom validators
 * Validation groups support (as context, like transactional calls)
 
-For guice 4 and java 8 (binary compatible with java 11)
+For guice 5 (and 4) and java 8 (binary compatible with java 11)
 
 [Old version 1.2.0 docs](https://github.com/xvik/guice-validator/tree/1.2.0)
 
@@ -33,7 +33,7 @@ use hibernate-validator 6 (and `javax.validation`) then use previous version:
 Version | Target
 ----|----
 guice validator 3.x | Hibernate-validator 7, for `jakarta.validation`
-[guice-validator 2.x](https://github.com/xvik/guice-validator/tree/2.0.0) | Hibernate-validator 6.x, for `javax.validation` 
+[guice-validator 2.x](https://github.com/xvik/guice-validator/tree/2.0.1) | Hibernate-validator 6.x, for `javax.validation` 
 
 ### Migration
 
@@ -41,10 +41,10 @@ If you migrating from hibernate-validator 6.x then change dependencies:
 
 Before |  After
 ---- | ------
-ru.vyarus:guice-validator:2.0.0 | ru.vyarus:guice-validator:3.0.0
+ru.vyarus:guice-validator:2.0.1 | ru.vyarus:guice-validator:3.0.1
 javax.validation:validation-api:2.0.1.Final | jakarta.validation:jakarta.validation-api:3.0.0
-org.hibernate:hibernate-validator:6.2.0.Final|  org.hibernate:hibernate-validator:7.0.0.Final
-org.glassfish:javax.el:3.0.1-b12 |  org.glassfish:jakarta.el:4.0.1
+org.hibernate:hibernate-validator:6.2.0.Final|  org.hibernate:hibernate-validator:7.0.1.Final
+org.glassfish:javax.el:3.0.1-b12 |  org.glassfish:jakarta.el:4.0.2
 
 And rename `javax.validation` package to `jakarta.validation` everywhere. Everything else is the same.
 
@@ -58,26 +58,26 @@ Maven:
 <dependency>
   <groupId>ru.vyarus</groupId>
   <artifactId>guice-validator</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
 </dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-validator</artifactId>
-  <version>7.0.0.Final</version>
+  <version>7.0.1.Final</version>
 </dependency>
 <dependency>
   <groupId>org.glassfish</groupId>
   <artifactId>jakarta.el</artifactId>
-  <version>4.0.1</version>
+  <version>4.0.2</version>
 </dependency>
 ```
 
 Gradle:
 
 ```groovy
-implementation 'ru.vyarus:guice-validator:3.0.0'
-implementation 'org.hibernate:hibernate-validator:7.0.0.Final'
-implementation 'org.glassfish:jakarta.el:4.0.1'
+implementation 'ru.vyarus:guice-validator:3.0.1'
+implementation 'org.hibernate:hibernate-validator:7.0.1.Final'
+implementation 'org.glassfish:jakarta.el:4.0.2'
 ```
 
 #### Snapshots

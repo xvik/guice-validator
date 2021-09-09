@@ -1,4 +1,6 @@
+### 3.0.1 (2021-09-09)
 * Fix Default group manual usage ignored in strict groups mode
+* Update to guice 5.0.1 (still compatible with guice 4)
 
 ### 3.0.0 (2021-01-20)
 * (breaking) Switch to `jakarta.validation` (EE9, Bean validation 3, hibernate-validator 7 support) from `javax.validation`) 
