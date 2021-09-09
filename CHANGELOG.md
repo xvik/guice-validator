@@ -1,4 +1,6 @@
+### 2.0.1 (2021-09-09)
 * Fix Default group manual usage ignored in strict groups mode
+* Update to guice 5.0.1 (still compatible with guice 4)
 
 ### 2.0.0 (2019-12-24)
 * Update to guice 4.2.2

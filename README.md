@@ -20,7 +20,7 @@ Features:
 * Guice injections work in custom validators
 * Validation groups support (as context, like transactional calls)
 
-For guice 4 and java 8 (binary compatible with java 11)
+For guice 5 (and 4) and java 8 (binary compatible with java 11)
 
 [Old version 1.2.0 docs](https://github.com/xvik/guice-validator/tree/1.2.0)
 
@@ -34,26 +34,26 @@ Maven:
 <dependency>
   <groupId>ru.vyarus</groupId>
   <artifactId>guice-validator</artifactId>
-  <version>2.0.0</version>
+  <version>2.0.1</version>
 </dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
   <artifactId>hibernate-validator</artifactId>
-  <version>6.1.0.Final</version>
+  <version>6.2.0.Final</version>
 </dependency>
 <dependency>
   <groupId>org.glassfish</groupId>
   <artifactId>javax.el</artifactId>
-  <version>3.0.1-b011</version>
+  <version>3.0.1-b012</version>
 </dependency>
 ```
 
 Gradle:
 
 ```groovy
-implementation 'ru.vyarus:guice-validator:2.0.0'
-implementation 'org.hibernate:hibernate-validator:6.1.0.Final'
-implementation 'org.glassfish:javax.el:3.0.1-b011'
+implementation 'ru.vyarus:guice-validator:2.0.1'
+implementation 'org.hibernate:hibernate-validator:6.2.0.Final'
+implementation 'org.glassfish:javax.el:3.0.1-b012'
 ```
 
 NOTE: hiberante-validator 6.0.x will also work.
