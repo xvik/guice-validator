@@ -23,7 +23,7 @@ dependencies {
     implementation 'jakarta.validation:jakarta.validation-api:3.0.1'
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.hibernate:hibernate-validator:7.0.2.Final'
+    testImplementation 'org.hibernate:hibernate-validator:7.0.3.Final'
     testImplementation 'org.glassfish:jakarta.el:4.0.2'
     testImplementation 'com.pushtorefresh.java-private-constructor-checker:checker:1.2.0'
 
