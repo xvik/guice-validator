@@ -18,9 +18,9 @@ install:
   - pip install codecov --user
 
 build_script:
-  - ./gradlew assemble --no-daemon
+  - ./gradlew assemble 
 test_script:
-  - ./gradlew check --no-daemon
+  - ./gradlew check 
 
 on_success:
   - ./gradlew jacocoTestReport --no-daemon
