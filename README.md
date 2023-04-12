@@ -58,7 +58,7 @@ Maven:
 <dependency>
   <groupId>ru.vyarus</groupId>
   <artifactId>guice-validator</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.2</version>
 </dependency>
 <dependency>
   <groupId>org.hibernate</groupId>
@@ -75,7 +75,7 @@ Maven:
 Gradle:
 
 ```groovy
-implementation 'ru.vyarus:guice-validator:3.0.1'
+implementation 'ru.vyarus:guice-validator:3.0.2'
 implementation 'org.hibernate:hibernate-validator:7.0.1.Final'
 implementation 'org.glassfish:jakarta.el:4.0.2'
 ```

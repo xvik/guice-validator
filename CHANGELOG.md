@@ -1,3 +1,4 @@
+### 3.0.2 (2023-04-12)
 * Avoid direct javax.inject annotations usage for jakarta.inject compatibility
   (guice native annotations used instead)
 
