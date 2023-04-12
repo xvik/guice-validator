@@ -2,7 +2,7 @@ package ru.vyarus.guice.validator.script;
 
 import org.hibernate.validator.constraints.ParameterScriptAssert;
 
-import javax.inject.Singleton;
+import com.google.inject.Singleton;
 import jakarta.validation.Valid;
 import jakarta.validation.executable.ValidateOnExecution;
 import java.util.List;

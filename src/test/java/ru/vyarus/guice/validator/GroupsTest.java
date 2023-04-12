@@ -10,7 +10,7 @@ import ru.vyarus.guice.validator.group.support.groups.ann.Group1;
 import ru.vyarus.guice.validator.group.support.groups.ann.Group2;
 import ru.vyarus.guice.validator.group.support.model.Model;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.executable.ValidateOnExecution;

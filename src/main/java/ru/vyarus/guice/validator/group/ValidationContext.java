@@ -4,8 +4,8 @@ import com.google.common.base.Throwables;
 import com.google.inject.name.Named;
 import ru.vyarus.guice.validator.ValidationModule;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import jakarta.validation.groups.Default;
 import java.util.*;
 

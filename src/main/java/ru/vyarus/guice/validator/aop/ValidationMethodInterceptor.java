@@ -4,8 +4,8 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import ru.vyarus.guice.validator.group.ValidationContext;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ElementKind;

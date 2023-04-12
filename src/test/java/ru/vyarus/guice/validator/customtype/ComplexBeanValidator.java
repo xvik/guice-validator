@@ -1,6 +1,6 @@
 package ru.vyarus.guice.validator.customtype;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

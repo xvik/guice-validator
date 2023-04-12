@@ -1,6 +1,6 @@
 package ru.vyarus.guice.validator.customtype;
 
-import javax.inject.Singleton;
+import com.google.inject.Singleton;
 import jakarta.validation.Valid;
 import jakarta.validation.executable.ValidateOnExecution;
 

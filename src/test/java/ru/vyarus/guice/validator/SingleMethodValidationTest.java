@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runners.Parameterized;
 
-import javax.inject.Singleton;
+import com.google.inject.Singleton;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.executable.ValidateOnExecution;

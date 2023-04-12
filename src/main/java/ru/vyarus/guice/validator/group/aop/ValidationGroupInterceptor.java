@@ -6,7 +6,7 @@ import ru.vyarus.guice.validator.group.GroupAction;
 import ru.vyarus.guice.validator.group.ValidationContext;
 import ru.vyarus.guice.validator.group.annotation.MethodGroupsFactory;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 /**
  * Intercepts methods under {@link ru.vyarus.guice.validator.group.annotation.ValidationGroups} annotation to declare

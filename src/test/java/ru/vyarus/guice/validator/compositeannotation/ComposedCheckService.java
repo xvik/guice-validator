@@ -1,6 +1,6 @@
 package ru.vyarus.guice.validator.compositeannotation;
 
-import javax.inject.Singleton;
+import com.google.inject.Singleton;
 import jakarta.validation.executable.ValidateOnExecution;
 
 /**

@@ -1,3 +1,6 @@
+* Avoid direct javax.inject annotations usage for jakarta.inject compatibility
+  (guice native annotations used instead)
+
 ### 3.0.1 (2021-09-09)
 * Fix Default group manual usage ignored in strict groups mode
 * Update to guice 5.0.1 (still compatible with guice 4)

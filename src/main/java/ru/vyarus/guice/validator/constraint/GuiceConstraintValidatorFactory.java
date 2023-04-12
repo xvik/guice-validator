@@ -2,7 +2,7 @@ package ru.vyarus.guice.validator.constraint;
 
 import com.google.inject.Injector;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorFactory;
 
