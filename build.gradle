@@ -19,7 +19,7 @@ wrapper {
 
 repositories { mavenLocal(); mavenCentral() }
 dependencies {
-    implementation 'com.google.inject:guice:5.1.0'
+    implementation 'com.google.inject:guice:7.0.0'
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 
     testImplementation 'junit:junit:4.13.2'
