@@ -29,7 +29,7 @@ dependencies {
 
     // was removed in jdk 15
     if(JavaVersion.current() >= JavaVersion.VERSION_15) {
-        implementation 'org.openjdk.nashorn:nashorn-core:15.6'
+        implementation 'org.openjdk.nashorn:nashorn-core:15.7'
     }
 }
 
