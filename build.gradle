@@ -16,7 +16,7 @@ java {
 }
 
 wrapper {
-    gradleVersion = '7.2'
+    gradleVersion = '8.14.3'
     distributionType = Wrapper.DistributionType.BIN
 }
 
