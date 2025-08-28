@@ -60,9 +60,10 @@ public class ValidationMethodInterceptor implements MethodInterceptor {
         return result;
     }
 
+    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     private String getMessage(final Member member, final Object[] args,
                               final Set<? extends ConstraintViolation<?>> violations) {
-        final StringBuilder message = new StringBuilder(200)
+        final StringBuilder message = new StringBuilder(300)
                 .append(violations.size())
                 .append(" constraint violation(s) occurred during method validation.")
                 .append("\nConstructor or Method: ").append(member)

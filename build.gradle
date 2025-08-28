@@ -5,7 +5,8 @@ plugins {
     id 'signing'
     id 'ru.vyarus.java-lib' version '3.0.0'
     id 'ru.vyarus.github-info' version '2.0.0'
-    id 'ru.vyarus.quality' version '5.0.0'
+    id 'ru.vyarus.quality' version '6.0.0'
+    id 'com.github.spotbugs' version '5.2.5'
     id 'net.researchgate.release' version '3.1.0'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
     id 'com.github.ben-manes.versions' version '0.52.0'
@@ -31,7 +32,7 @@ dependencies {
     testImplementation 'com.pushtorefresh.java-private-constructor-checker:checker:1.2.0'
 
     // was removed in jdk 15
-    if(JavaVersion.current() >= JavaVersion.VERSION_15) {
+    if (JavaVersion.current() >= JavaVersion.VERSION_15) {
         implementation 'org.openjdk.nashorn:nashorn-core:15.7'
     }
 }

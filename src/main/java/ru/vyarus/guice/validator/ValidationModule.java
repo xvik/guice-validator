@@ -218,7 +218,7 @@ public class ValidationModule extends AbstractModule {
                 ? res : res.and((Matcher<? super AnnotatedElement>) classMatcher);
     }
 
-    @SuppressWarnings({"unchecked", "PMD.CompareObjectsWithEquals"})
+    @SuppressWarnings("unchecked")
     protected Matcher<? super Method> getMethodMatcher(final Class<? extends Annotation> annotation) {
         final Matcher<AnnotatedElement> res = Matchers.annotatedWith(annotation);
         return methodMatcher == DECLARED_METHOD_MATCHER

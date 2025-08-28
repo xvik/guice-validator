@@ -95,7 +95,6 @@ public class ValidationContext {
         context.add(allgroups.toArray(new Class<?>[0]));
     }
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private void popContext() {
         final List<Class<?>[]> context = threadContext.get();
         if (context.size() > 1) {
